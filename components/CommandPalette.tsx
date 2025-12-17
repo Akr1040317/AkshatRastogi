@@ -11,6 +11,7 @@ interface Command {
   icon: React.ComponentType<any>;
   action: () => void;
   category: string;
+  shortcut?: string; // e.g., "⌘R" or "Ctrl+R"
 }
 
 interface CommandPaletteProps {
@@ -21,17 +22,29 @@ interface CommandPaletteProps {
 
 export default function CommandPalette({ isOpen, onClose, onModuleChange }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
+  const [isMac, setIsMac] = useState(false);
+
+  useEffect(() => {
+    setIsMac(navigator.platform.toUpperCase().indexOf('MAC') >= 0);
+  }, []);
+
+  const getShortcut = (key: string, modifier: string = 'mod') => {
+    if (modifier === 'mod') {
+      return isMac ? `⌘${key}` : `Ctrl+${key}`;
+    }
+    return isMac ? `⌘${key}` : `Ctrl+${key}`;
+  };
 
   const commands: Command[] = [
-    { id: 'overview', label: 'Go to Overview', icon: Home, action: () => { onModuleChange('overview'); onClose(); }, category: 'Navigation' },
-    { id: 'projects', label: 'Go to Projects', icon: FolderKanban, action: () => { onModuleChange('projects'); onClose(); }, category: 'Navigation' },
-    { id: 'experience', label: 'Go to Experience', icon: Briefcase, action: () => { onModuleChange('experience'); onClose(); }, category: 'Navigation' },
-    { id: 'leadership', label: 'Go to Leadership', icon: Award, action: () => { onModuleChange('leadership'); onClose(); }, category: 'Navigation' },
-    { id: 'contact', label: 'Go to Contact', icon: Mail, action: () => { onModuleChange('contact'); onClose(); }, category: 'Navigation' },
-    { id: 'copy-email', label: 'Copy Email', icon: Copy, action: () => { navigator.clipboard.writeText('rastogia@ufl.edu'); onClose(); }, category: 'Actions' },
-    { id: 'linkedin', label: 'Open LinkedIn', icon: ExternalLink, action: () => { window.open('https://linkedin.com/in/akshat-rastogi', '_blank'); onClose(); }, category: 'Actions' },
-    { id: 'github', label: 'Open GitHub', icon: ExternalLink, action: () => { window.open('https://github.com/Akr1040317', '_blank'); onClose(); }, category: 'Actions' },
-    { id: 'resume', label: 'Open Resume', icon: FileText, action: () => { /* Add resume link */ onClose(); }, category: 'Actions' },
+    { id: 'overview', label: 'Go to Overview', icon: Home, action: () => { onModuleChange('overview'); onClose(); }, category: 'Navigation', shortcut: getShortcut('1') },
+    { id: 'projects', label: 'Go to Projects', icon: FolderKanban, action: () => { onModuleChange('projects'); onClose(); }, category: 'Navigation', shortcut: getShortcut('2') },
+    { id: 'experience', label: 'Go to Experience', icon: Briefcase, action: () => { onModuleChange('experience'); onClose(); }, category: 'Navigation', shortcut: getShortcut('3') },
+    { id: 'leadership', label: 'Go to Leadership', icon: Award, action: () => { onModuleChange('leadership'); onClose(); }, category: 'Navigation', shortcut: getShortcut('4') },
+    { id: 'contact', label: 'Go to Contact', icon: Mail, action: () => { onModuleChange('contact'); onClose(); }, category: 'Navigation', shortcut: getShortcut('5') },
+    { id: 'copy-email', label: 'Copy Email', icon: Copy, action: () => { navigator.clipboard.writeText('akshatrdev@gmail.com'); onClose(); }, category: 'Actions', shortcut: getShortcut('E') },
+    { id: 'linkedin', label: 'Open LinkedIn', icon: ExternalLink, action: () => { window.open('https://linkedin.com/in/akshat-rastogi', '_blank'); onClose(); }, category: 'Actions', shortcut: getShortcut('L') },
+    { id: 'github', label: 'Open GitHub', icon: ExternalLink, action: () => { window.open('https://github.com/Akr1040317', '_blank'); onClose(); }, category: 'Actions', shortcut: getShortcut('G') },
+    { id: 'resume', label: 'Open Resume', icon: FileText, action: () => { window.open('/Akshat_Rastogi_Resume.pdf', '_blank'); onClose(); }, category: 'Actions', shortcut: getShortcut('R') },
   ];
 
   const filteredCommands = commands.filter((cmd) =>
@@ -97,14 +110,34 @@ export default function CommandPalette({ isOpen, onClose, onModuleChange }: Comm
                         <motion.button
                           key={cmd.id}
                           onClick={cmd.action}
-                          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors text-left"
+                          className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors text-left group"
                           whileHover={{ x: 4 }}
                         >
-                          <Icon size={20} className="text-muted" />
-                          <div className="flex-1">
-                            <div className="text-white">{cmd.label}</div>
-                            <div className="text-xs text-muted">{cmd.category}</div>
+                          <div className="flex items-center gap-3 flex-1">
+                            <Icon size={20} className="text-muted" />
+                            <div className="flex-1">
+                              <div className="text-white">{cmd.label}</div>
+                              <div className="text-xs text-muted">{cmd.category}</div>
+                            </div>
                           </div>
+                          {cmd.shortcut && (
+                            <div className="flex items-center gap-1">
+                              {cmd.shortcut.includes('+') ? (
+                                cmd.shortcut.split('+').map((key, idx, arr) => (
+                                  <span key={idx} className="flex items-center gap-1">
+                                    <kbd className="px-2 py-1 text-xs rounded glass border border-white/20 font-mono text-muted">
+                                      {key}
+                                    </kbd>
+                                    {idx < arr.length - 1 && <span className="text-xs text-muted">+</span>}
+                                  </span>
+                                ))
+                              ) : (
+                                <kbd className="px-2 py-1 text-xs rounded glass border border-white/20 font-mono text-muted">
+                                  {cmd.shortcut}
+                                </kbd>
+                              )}
+                            </div>
+                          )}
                         </motion.button>
                       );
                     })}
