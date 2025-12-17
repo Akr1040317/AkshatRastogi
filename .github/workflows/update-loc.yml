@@ -67,5 +67,8 @@ jobs:
 
           git add public/github-stats.json public/github-stats-simple.json
           git commit -m "chore: update GitHub stats with latest lines of code count" || echo "No changes to commit"
+          
+          # Push using the PAT token for authentication
+          git remote set-url origin https://$GH_PAT@github.com/${{ github.repository }}.git
           git push origin HEAD
 
