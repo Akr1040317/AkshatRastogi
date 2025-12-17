@@ -69,15 +69,16 @@ export default function ProjectsSection() {
               return (
                 <motion.div
                   key={project.id}
-                  initial={{ opacity: 0, y: 50, scale: 0.9, rotateX: -15 }}
+                  initial={{ opacity: 0, y: 60, scale: 0.9, rotateX: -30 }}
                   animate={isInView ? { opacity: 1, y: 0, scale: 1, rotateX: 0 } : {}}
                   transition={{ 
-                    duration: 0.6, 
-                    delay: index * 0.1,
+                    duration: 0.7, 
+                    delay: index * 0.08,
                     type: 'spring',
-                    stiffness: 100,
+                    stiffness: 120,
+                    damping: 12,
                   }}
-                  whileHover={{ y: -10, scale: 1.02 }}
+                  whileHover={{ y: -8, rotateX: 5 }}
                   className={`group cursor-pointer ${isLarge ? 'md:col-span-2 lg:col-span-2' : ''}`}
                   onClick={() => setSelectedProject(project)}
                 >
