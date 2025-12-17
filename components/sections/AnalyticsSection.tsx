@@ -7,30 +7,48 @@ import { Globe, Users, Github, Code, FileText, GitBranch, Folder } from 'lucide-
 
 // Animated counter component
 function AnimatedNumber({ value, delay = 0, decimals = 0 }: { value: number; delay?: number; decimals?: number }) {
+  const [displayValue, setDisplayValue] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
-  
-  const spring = useSpring(0, {
-    stiffness: 100,
-    damping: 30,
-  });
-  
-  const display = useTransform(spring, (current) => {
-    if (decimals > 0) {
-      return current.toFixed(decimals);
-    }
-    return Math.floor(current).toLocaleString();
-  });
 
   useEffect(() => {
-    if (isInView) {
-      setTimeout(() => {
-        spring.set(value);
-      }, delay * 1000);
-    }
-  }, [isInView, value, spring, delay]);
+    if (!isInView) return;
 
-  return <motion.span ref={ref}>{display}</motion.span>;
+    const startTime = Date.now();
+    const duration = 2000; // 2 seconds
+    const startValue = 0;
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      
+      const current = startValue + (value - startValue) * easeOutQuart;
+      
+      if (decimals > 0) {
+        setDisplayValue(parseFloat(current.toFixed(decimals)));
+      } else {
+        setDisplayValue(Math.floor(current));
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        // Ensure final value is exact
+        setDisplayValue(value);
+      }
+    };
+
+    const timeout = setTimeout(() => {
+      animate();
+    }, delay * 1000);
+
+    return () => clearTimeout(timeout);
+  }, [isInView, value, delay, decimals]);
+
+  return <span ref={ref}>{displayValue.toLocaleString()}</span>;
 }
 
 interface GitHubStats {
