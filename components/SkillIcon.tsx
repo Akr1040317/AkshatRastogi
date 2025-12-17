@@ -13,7 +13,7 @@ interface SkillIconProps {
   size?: number;
 }
 
-const skillIconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const skillIconMap: Record<string, React.ComponentType<{ size?: number; className?: string; color?: string }>> = {
   // Languages
   'JavaScript': SiJavascript,
   'TypeScript': SiTypescript,
@@ -111,7 +111,7 @@ export default function SkillIcon({ skill, size = 20 }: SkillIconProps) {
   return (
     <IconComponent 
       size={size} 
-      style={{ color: brandColor }}
+      color={brandColor}
       className="transition-all group-hover:scale-110"
     />
   );
