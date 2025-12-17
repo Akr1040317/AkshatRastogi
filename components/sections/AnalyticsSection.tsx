@@ -1,9 +1,34 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Globe, Users, Github, Code, FileText, GitBranch, Folder } from 'lucide-react';
+
+// Animated counter component
+function AnimatedNumber({ value, delay = 0 }: { value: number; delay?: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  
+  const spring = useSpring(0, {
+    stiffness: 100,
+    damping: 30,
+  });
+  
+  const display = useTransform(spring, (current) =>
+    Math.floor(current)
+  );
+
+  useEffect(() => {
+    if (isInView) {
+      setTimeout(() => {
+        spring.set(value);
+      }, delay * 1000);
+    }
+  }, [isInView, value, spring, delay]);
+
+  return <motion.span ref={ref}>{display}</motion.span>;
+}
 
 interface GitHubStats {
   publicRepos: number;
@@ -82,6 +107,7 @@ export default function AnalyticsSection() {
         setGithubStats({
           publicRepos: 20,
           totalCommits: 1000,
+          totalCommitsLastYear: 500,
           totalLines: 100000,
           totalFiles: 300,
           loading: false,
@@ -92,11 +118,21 @@ export default function AnalyticsSection() {
     fetchGitHubStats();
   }, []);
 
+  // Helper function to format number with animation
+  const formatAnimatedValue = (num: number, suffix: string = '+') => {
+    if (num >= 1000000) {
+      return { value: num / 1000000, format: 'M', suffix };
+    } else if (num >= 1000) {
+      return { value: num / 1000, format: 'K', suffix };
+    }
+    return { value: num, format: '', suffix };
+  };
+
   const stats = [
     {
       icon: Globe,
       label: 'Websites Created',
-      value: '72+',
+      numericValue: 72,
       color: 'text-blue-400',
       bgColor: 'bg-blue/20',
       delay: 0,
@@ -104,7 +140,7 @@ export default function AnalyticsSection() {
     {
       icon: Users,
       label: 'Hive Students',
-      value: '600+',
+      numericValue: 600,
       color: 'text-purple-400',
       bgColor: 'bg-purple/20',
       delay: 0.1,
@@ -112,7 +148,8 @@ export default function AnalyticsSection() {
     {
       icon: Github,
       label: 'GitHub Repositories',
-      value: githubStats.loading ? '...' : `${githubStats.publicRepos}+`,
+      numericValue: githubStats.publicRepos,
+      isLoading: githubStats.loading,
       color: 'text-pink-400',
       bgColor: 'bg-pink/20',
       delay: 0.2,
@@ -120,13 +157,8 @@ export default function AnalyticsSection() {
     {
       icon: Code,
       label: 'Lines of Code',
-      value: githubStats.loading 
-        ? '...' 
-        : githubStats.totalLines >= 1000000 
-          ? `${(githubStats.totalLines / 1000000).toFixed(1)}M+`
-          : githubStats.totalLines >= 1000 
-            ? `${Math.round(githubStats.totalLines / 1000)}K+`
-            : `${githubStats.totalLines}+`,
+      numericValue: githubStats.totalLines,
+      isLoading: githubStats.loading,
       color: 'text-green-400',
       bgColor: 'bg-green/20',
       delay: 0.3,
@@ -134,11 +166,8 @@ export default function AnalyticsSection() {
     {
       icon: GitBranch,
       label: 'Commits (Last Year)',
-      value: githubStats.loading 
-        ? '...' 
-        : githubStats.totalCommitsLastYear >= 1000 
-          ? `${Math.round(githubStats.totalCommitsLastYear / 1000)}K+`
-          : `${githubStats.totalCommitsLastYear}+`,
+      numericValue: githubStats.totalCommitsLastYear,
+      isLoading: githubStats.loading,
       color: 'text-orange-400',
       bgColor: 'bg-orange/20',
       delay: 0.4,
@@ -192,7 +221,28 @@ export default function AnalyticsSection() {
                   transition={{ duration: 0.5, delay: stat.delay + 0.3 }}
                   className={`text-4xl md:text-5xl font-bold mb-2 ${stat.color}`}
                 >
-                  {stat.value}
+                  {stat.isLoading ? (
+                    '...'
+                  ) : (
+                    <>
+                      {stat.numericValue >= 1000000 ? (
+                        <>
+                          <AnimatedNumber value={stat.numericValue / 1000000} delay={stat.delay + 0.3} />
+                          <span>M+</span>
+                        </>
+                      ) : stat.numericValue >= 1000 ? (
+                        <>
+                          <AnimatedNumber value={stat.numericValue / 1000} delay={stat.delay + 0.3} />
+                          <span>K+</span>
+                        </>
+                      ) : (
+                        <>
+                          <AnimatedNumber value={stat.numericValue} delay={stat.delay + 0.3} />
+                          <span>+</span>
+                        </>
+                      )}
+                    </>
+                  )}
                 </motion.div>
                 <motion.div
                   initial={{ opacity: 0 }}
