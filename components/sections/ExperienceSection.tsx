@@ -50,7 +50,6 @@ export default function ExperienceSection() {
                     type: 'spring',
                     stiffness: 100,
                     damping: 12,
-                    stiffness: 80,
                   }}
                   whileInView={{ x: 0, opacity: 1 }}
                   viewport={{ once: true }}
