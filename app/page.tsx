@@ -80,48 +80,10 @@ export default function Home() {
     const handleKeyDown = (e: KeyboardEvent) => {
       const isMod = e.metaKey || e.ctrlKey;
       
-      // Open command palette
+      // Open command palette (only shortcut that works globally)
       if (isMod && e.key === 'k') {
         e.preventDefault();
         setCommandPaletteOpen(true);
-        return;
-      }
-
-      // Don't trigger shortcuts when typing in inputs
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-        return;
-      }
-
-      // Navigation shortcuts
-      if (isMod && e.key === '1') {
-        e.preventDefault();
-        scrollToSection('hero');
-      } else if (isMod && e.key === '2') {
-        e.preventDefault();
-        scrollToSection('projects');
-      } else if (isMod && e.key === '3') {
-        e.preventDefault();
-        scrollToSection('experience');
-      } else if (isMod && e.key === '4') {
-        e.preventDefault();
-        scrollToSection('leadership');
-      } else if (isMod && e.key === '5') {
-        e.preventDefault();
-        scrollToSection('contact');
-      }
-      // Action shortcuts
-      else if (isMod && e.key.toLowerCase() === 'e') {
-        e.preventDefault();
-        navigator.clipboard.writeText('akshatrdev@gmail.com');
-      } else if (isMod && e.key.toLowerCase() === 'l') {
-        e.preventDefault();
-        window.open('https://linkedin.com/in/akshat-rastogi', '_blank');
-      } else if (isMod && e.key.toLowerCase() === 'g') {
-        e.preventDefault();
-        window.open('https://github.com/Akr1040317', '_blank');
-      } else if (isMod && e.key.toLowerCase() === 'r') {
-        e.preventDefault();
-        window.open('/Akshat_Rastogi_Resume.pdf', '_blank');
       }
     };
 

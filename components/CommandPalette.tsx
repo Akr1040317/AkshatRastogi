@@ -54,22 +54,60 @@ export default function CommandPalette({ isOpen, onClose, onModuleChange }: Comm
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if (!isOpen) return;
+
+      const isMod = e.metaKey || e.ctrlKey;
+      
+      // Close palette
+      if (e.key === 'Escape') {
         e.preventDefault();
-        if (isOpen) {
-          onClose();
-        } else {
-          // Will be handled by parent
-        }
+        onClose();
+        return;
       }
-      if (e.key === 'Escape' && isOpen) {
+
+      // Handle shortcuts only when palette is open
+      if (isMod && e.key === '1') {
+        e.preventDefault();
+        onModuleChange('overview');
+        onClose();
+      } else if (isMod && e.key === '2') {
+        e.preventDefault();
+        onModuleChange('projects');
+        onClose();
+      } else if (isMod && e.key === '3') {
+        e.preventDefault();
+        onModuleChange('experience');
+        onClose();
+      } else if (isMod && e.key === '4') {
+        e.preventDefault();
+        onModuleChange('leadership');
+        onClose();
+      } else if (isMod && e.key === '5') {
+        e.preventDefault();
+        onModuleChange('contact');
+        onClose();
+      } else if (isMod && e.key.toLowerCase() === 'e') {
+        e.preventDefault();
+        navigator.clipboard.writeText('akshatrdev@gmail.com');
+        onClose();
+      } else if (isMod && e.key.toLowerCase() === 'l') {
+        e.preventDefault();
+        window.open('https://linkedin.com/in/akshat-rastogi', '_blank');
+        onClose();
+      } else if (isMod && e.key.toLowerCase() === 'g') {
+        e.preventDefault();
+        window.open('https://github.com/Akr1040317', '_blank');
+        onClose();
+      } else if (isMod && e.key.toLowerCase() === 'r') {
+        e.preventDefault();
+        window.open('/Akshat_Rastogi_Resume.pdf', '_blank');
         onClose();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, onModuleChange]);
 
   return (
     <AnimatePresence>
