@@ -37,17 +37,40 @@ export async function GET() {
     
     // Calculate total lines based on repository sizes
     let totalLines = 0;
+    const repoDetails: Array<{ name: string; sizeKB: number; estimatedLines: number }> = [];
     
     for (const repo of publicRepos) {
       // Repository size is in KB
       const repoSizeKB = repo.size || 0;
-      totalLines += estimateLinesFromSize(repoSizeKB);
+      const estimatedLines = estimateLinesFromSize(repoSizeKB);
+      totalLines += estimatedLines;
+      
+      if (repoSizeKB > 0) {
+        repoDetails.push({
+          name: repo.name,
+          sizeKB: repoSizeKB,
+          estimatedLines,
+        });
+      }
     }
+    
+    // Sort repos by size for logging
+    repoDetails.sort((a, b) => b.estimatedLines - a.estimatedLines);
+    
+    // Log calculation details
+    console.log(`📊 GitHub Stats Calculation:`);
+    console.log(`   Total public repos: ${publicRepos.length}`);
+    console.log(`   Total estimated lines: ${totalLines.toLocaleString()}`);
+    console.log(`   Top 5 repos by size:`);
+    repoDetails.slice(0, 5).forEach((repo, idx) => {
+      console.log(`     ${idx + 1}. ${repo.name}: ${repo.sizeKB}KB = ~${repo.estimatedLines.toLocaleString()} lines`);
+    });
     
     // If we got a reasonable estimate, use it; otherwise fallback
     if (totalLines === 0 && publicRepos.length > 0) {
       // Fallback: estimate based on repo count
       totalLines = publicRepos.length * 5000;
+      console.log(`   ⚠️ Using fallback calculation: ${publicRepos.length} repos × 5000 = ${totalLines.toLocaleString()} lines`);
     }
     
     const stats: GitHubStats = {

@@ -38,21 +38,23 @@ export default function AnalyticsSection() {
         
         const publicRepos = reposData.public_repos || reposList.length || 0;
         
-        // Try to fetch actual lines of code from our API route (which reads from GitHub Actions generated file)
+        // Try to fetch actual lines of code from our API route
         let totalLines = 0;
         try {
           const statsResponse = await fetch('/api/github-stats');
           if (statsResponse.ok) {
             const statsData = await statsResponse.json();
             totalLines = statsData.totalLines || 0;
+            console.log(`✅ Fetched LOC from API: ${totalLines.toLocaleString()} lines`);
           }
         } catch (error) {
-          console.log('Could not fetch from API, using estimate');
+          console.log('⚠️ Could not fetch from API, using estimate', error);
         }
         
         // Fallback estimate if API doesn't have data yet
         if (totalLines === 0) {
           totalLines = publicRepos * 5000; // Rough estimate: ~5000 lines per repo
+          console.log(`📊 Using fallback estimate: ${publicRepos} repos × 5000 = ${totalLines.toLocaleString()} lines`);
         }
         
         // Estimate commits (GitHub API doesn't provide total commits easily)
@@ -114,7 +116,7 @@ export default function AnalyticsSection() {
         : githubStats.totalLines >= 1000000 
           ? `${(githubStats.totalLines / 1000000).toFixed(1)}M+`
           : githubStats.totalLines >= 1000 
-            ? `${Math.floor(githubStats.totalLines / 1000)}K+`
+            ? `${Math.round(githubStats.totalLines / 1000)}K+`
             : `${githubStats.totalLines}+`,
       color: 'text-green-400',
       bgColor: 'bg-green/20',
