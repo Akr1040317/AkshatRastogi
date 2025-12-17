@@ -28,7 +28,9 @@ function AnimatedNumber({ value, delay = 0, decimals = 0 }: { value: number; del
       const current = startValue + (value - startValue) * easeOutQuart;
       
       if (decimals > 0) {
-        setDisplayValue(parseFloat(current.toFixed(decimals)));
+        // Round to specified decimal places
+        const rounded = parseFloat(current.toFixed(decimals));
+        setDisplayValue(rounded);
       } else {
         setDisplayValue(Math.floor(current));
       }
@@ -36,8 +38,12 @@ function AnimatedNumber({ value, delay = 0, decimals = 0 }: { value: number; del
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
-        // Ensure final value is exact
-        setDisplayValue(value);
+        // Ensure final value is exact and properly rounded
+        if (decimals > 0) {
+          setDisplayValue(parseFloat(value.toFixed(decimals)));
+        } else {
+          setDisplayValue(value);
+        }
       }
     };
 
@@ -48,7 +54,15 @@ function AnimatedNumber({ value, delay = 0, decimals = 0 }: { value: number; del
     return () => clearTimeout(timeout);
   }, [isInView, value, delay, decimals]);
 
-  return <span ref={ref}>{displayValue.toLocaleString()}</span>;
+  // Format display value
+  const formatValue = () => {
+    if (decimals > 0) {
+      return displayValue.toFixed(decimals);
+    }
+    return displayValue.toLocaleString();
+  };
+
+  return <span ref={ref}>{formatValue()}</span>;
 }
 
 interface GitHubStats {
