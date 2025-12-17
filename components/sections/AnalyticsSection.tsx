@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { Globe, Users, Github, Code, FileText, GitBranch, Folder } from 'lucide-react';
 
 // Animated counter component
-function AnimatedNumber({ value, delay = 0 }: { value: number; delay?: number }) {
+function AnimatedNumber({ value, delay = 0, decimals = 0 }: { value: number; delay?: number; decimals?: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
   
@@ -15,9 +15,12 @@ function AnimatedNumber({ value, delay = 0 }: { value: number; delay?: number })
     damping: 30,
   });
   
-  const display = useTransform(spring, (current) =>
-    Math.floor(current)
-  );
+  const display = useTransform(spring, (current) => {
+    if (decimals > 0) {
+      return current.toFixed(decimals);
+    }
+    return Math.floor(current).toLocaleString();
+  });
 
   useEffect(() => {
     if (isInView) {
@@ -227,17 +230,29 @@ export default function AnalyticsSection() {
                     <>
                       {stat.numericValue >= 1000000 ? (
                         <>
-                          <AnimatedNumber value={stat.numericValue / 1000000} delay={stat.delay + 0.3} />
+                          <AnimatedNumber 
+                            value={stat.numericValue / 1000000} 
+                            delay={stat.delay + 0.3} 
+                            decimals={1}
+                          />
                           <span>M+</span>
                         </>
                       ) : stat.numericValue >= 1000 ? (
                         <>
-                          <AnimatedNumber value={stat.numericValue / 1000} delay={stat.delay + 0.3} />
+                          <AnimatedNumber 
+                            value={stat.numericValue / 1000} 
+                            delay={stat.delay + 0.3}
+                            decimals={0}
+                          />
                           <span>K+</span>
                         </>
                       ) : (
                         <>
-                          <AnimatedNumber value={stat.numericValue} delay={stat.delay + 0.3} />
+                          <AnimatedNumber 
+                            value={stat.numericValue} 
+                            delay={stat.delay + 0.3}
+                            decimals={0}
+                          />
                           <span>+</span>
                         </>
                       )}
