@@ -1,0 +1,71 @@
+name: Update Lines of Code
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Runs weekly on Sunday at midnight (UTC)
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  count-lines:
+    runs-on: ubuntu-latest
+    env:
+      # Ignore non-source code files
+      IGNORE_LANGS: "JSON,HTML,CSS,SCSS,Sass,Markdown,SVG,XML,YAML,TOML,CSV,Text,Properties"
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq cloc locales
+          sudo locale-gen en_US.UTF-8
+
+      - name: Fetch and Clone Repositories
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          # Get a list of public repositories that are not forks
+          REPOS=$(curl -H "Authorization: token $GH_PAT" -s "https://api.github.com/user/repos?per_page=100" | jq -r '.[] | select(.fork == false) | .full_name') || echo "Error fetching repositories"
+
+          mkdir -p public-repos
+          cd public-repos
+
+          for REPO in $REPOS; do
+            REPO_URL="https://github.com/$REPO.git"
+            AUTHENTICATED_REPO=$(echo "$REPO_URL" | sed "s/https:\/\//https:\/\/$GH_PAT@/g")
+            
+            # Determine the default branch dynamically
+            DEFAULT_BRANCH=$(curl -H "Authorization: token $GH_PAT" -s "https://api.github.com/repos/$REPO" | jq -r '.default_branch')
+
+            echo "Cloning $REPO (default branch: $DEFAULT_BRANCH)..."
+            git clone --branch "$DEFAULT_BRANCH" --single-branch --depth 1 "$AUTHENTICATED_REPO" "$(basename $REPO)" || echo "Failed to clone $REPO."
+          done
+
+          # Run cloc to get total lines of code
+          echo "Calculating total lines of code..."
+          mkdir -p ../public
+          cloc . --json --report-file=../public/github-stats.json --exclude-lang="${IGNORE_LANGS}"
+
+      - name: Extract Total and Update
+        run: |
+          # Extract total lines of code from cloc output
+          TOTAL_LINES=$(jq '.SUM.code // 0' public/github-stats.json)
+          
+          # Create a simpler stats file with just the total
+          echo "{\"totalLines\": $TOTAL_LINES, \"lastUpdated\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > public/github-stats-simple.json
+          
+          echo "Total lines of code: $TOTAL_LINES"
+
+      - name: Commit and Push
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add public/github-stats.json public/github-stats-simple.json
+          git commit -m "chore: update GitHub stats with latest lines of code count" || echo "No changes to commit"
+          git push origin HEAD
+
