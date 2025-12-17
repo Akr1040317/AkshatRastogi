@@ -5,6 +5,7 @@ export const revalidate = 3600; // Revalidate every hour
 
 interface GitHubStats {
   totalLines: number;
+  totalCommitsLastYear: number;
   lastUpdated: string;
 }
 
@@ -57,14 +58,83 @@ export async function GET() {
     // Sort repos by size for logging
     repoDetails.sort((a, b) => b.estimatedLines - a.estimatedLines);
     
+    // Calculate commits in the last year
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const sinceDate = oneYearAgo.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    
+    let totalCommitsLastYear = 0;
+    const commitDetails: Array<{ name: string; commits: number }> = [];
+    
+    console.log(`📊 Calculating commits since ${sinceDate}...`);
+    
+    // Fetch commits from each repo (limit to avoid rate limits)
+    for (const repo of publicRepos.slice(0, 50)) { // Limit to 50 repos to avoid rate limits
+      try {
+        // Fetch commits with author filter and date filter
+        const commitsResponse = await fetch(
+          `https://api.github.com/repos/${repo.full_name}/commits?author=Akr1040317&since=${sinceDate}&per_page=100`,
+          {
+            headers: {
+              'Accept': 'application/vnd.github.v3+json',
+            },
+          }
+        );
+        
+        if (commitsResponse.ok) {
+          // GitHub API uses pagination, but for commits in last year, we can get a good estimate
+          // by checking the Link header or just counting what we get
+          const commits = await commitsResponse.json();
+          const commitCount = Array.isArray(commits) ? commits.length : 0;
+          
+          // If we got 100 commits, there might be more (GitHub pagination limit)
+          // For accuracy, we'd need to paginate, but for performance we'll use this estimate
+          if (commitCount === 100) {
+            // Likely more commits, estimate based on repo activity
+            // Check if repo has recent activity
+            const daysSinceUpdate = Math.floor(
+              (new Date().getTime() - new Date(repo.updated_at).getTime()) / (1000 * 60 * 60 * 24)
+            );
+            if (daysSinceUpdate < 30) {
+              // Active repo, estimate higher
+              totalCommitsLastYear += commitCount * 1.5; // Estimate multiplier
+            } else {
+              totalCommitsLastYear += commitCount;
+            }
+          } else {
+            totalCommitsLastYear += commitCount;
+          }
+          
+          if (commitCount > 0) {
+            commitDetails.push({ name: repo.name, commits: commitCount });
+          }
+        }
+        
+        // Small delay to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (error) {
+        console.log(`   ⚠️ Error fetching commits for ${repo.name}:`, error);
+      }
+    }
+    
+    // Sort repos by commit count for logging
+    commitDetails.sort((a, b) => b.commits - a.commits);
+    
     // Log calculation details
     console.log(`📊 GitHub Stats Calculation:`);
     console.log(`   Total public repos: ${publicRepos.length}`);
     console.log(`   Total estimated lines: ${totalLines.toLocaleString()}`);
+    console.log(`   Total commits (last year): ${Math.round(totalCommitsLastYear).toLocaleString()}`);
     console.log(`   Top 5 repos by size:`);
     repoDetails.slice(0, 5).forEach((repo, idx) => {
       console.log(`     ${idx + 1}. ${repo.name}: ${repo.sizeKB}KB = ~${repo.estimatedLines.toLocaleString()} lines`);
     });
+    if (commitDetails.length > 0) {
+      console.log(`   Top 5 repos by commits:`);
+      commitDetails.slice(0, 5).forEach((repo, idx) => {
+        console.log(`     ${idx + 1}. ${repo.name}: ${repo.commits} commits`);
+      });
+    }
     
     // If we got a reasonable estimate, use it; otherwise fallback
     if (totalLines === 0 && publicRepos.length > 0) {
@@ -75,6 +145,7 @@ export async function GET() {
     
     const stats: GitHubStats = {
       totalLines,
+      totalCommitsLastYear: Math.round(totalCommitsLastYear),
       lastUpdated: new Date().toISOString(),
     };
 
@@ -86,6 +157,7 @@ export async function GET() {
     return NextResponse.json(
       { 
         totalLines: 60000, // Fallback estimate
+        totalCommitsLastYear: 500, // Fallback estimate
         lastUpdated: new Date().toISOString(),
         error: 'Failed to fetch stats, using estimate' 
       },

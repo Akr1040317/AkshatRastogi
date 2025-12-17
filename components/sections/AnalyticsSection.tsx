@@ -8,6 +8,7 @@ import { Globe, Users, Github, Code, FileText, GitBranch, Folder } from 'lucide-
 interface GitHubStats {
   publicRepos: number;
   totalCommits: number;
+  totalCommitsLastYear: number;
   totalLines: number;
   totalFiles: number;
   loading: boolean;
@@ -19,6 +20,7 @@ export default function AnalyticsSection() {
   const [githubStats, setGithubStats] = useState<GitHubStats>({
     publicRepos: 0,
     totalCommits: 0,
+    totalCommitsLastYear: 0,
     totalLines: 0,
     totalFiles: 0,
     loading: true,
@@ -38,14 +40,18 @@ export default function AnalyticsSection() {
         
         const publicRepos = reposData.public_repos || reposList.length || 0;
         
-        // Try to fetch actual lines of code from our API route
+        // Try to fetch actual stats from our API route
         let totalLines = 0;
+        let totalCommitsLastYear = 0;
         try {
           const statsResponse = await fetch('/api/github-stats');
           if (statsResponse.ok) {
             const statsData = await statsResponse.json();
             totalLines = statsData.totalLines || 0;
-            console.log(`✅ Fetched LOC from API: ${totalLines.toLocaleString()} lines`);
+            totalCommitsLastYear = statsData.totalCommitsLastYear || 0;
+            console.log(`✅ Fetched stats from API:`);
+            console.log(`   LOC: ${totalLines.toLocaleString()} lines`);
+            console.log(`   Commits (last year): ${totalCommitsLastYear.toLocaleString()}`);
           }
         } catch (error) {
           console.log('⚠️ Could not fetch from API, using estimate', error);
@@ -57,12 +63,15 @@ export default function AnalyticsSection() {
           console.log(`📊 Using fallback estimate: ${publicRepos} repos × 5000 = ${totalLines.toLocaleString()} lines`);
         }
         
-        // Estimate commits (GitHub API doesn't provide total commits easily)
-        const estimatedCommits = publicRepos * 50; // Rough estimate
+        // Fallback for commits if API doesn't have data
+        if (totalCommitsLastYear === 0) {
+          totalCommitsLastYear = publicRepos * 20; // Rough estimate: ~20 commits per repo per year
+        }
         
         setGithubStats({
           publicRepos,
-          totalCommits: estimatedCommits,
+          totalCommits: totalCommitsLastYear, // Use last year's commits as total
+          totalCommitsLastYear,
           totalLines,
           totalFiles: publicRepos * 15, // Rough estimate: ~15 files per repo
           loading: false,
@@ -122,6 +131,18 @@ export default function AnalyticsSection() {
       bgColor: 'bg-green/20',
       delay: 0.3,
     },
+    {
+      icon: GitBranch,
+      label: 'Commits (Last Year)',
+      value: githubStats.loading 
+        ? '...' 
+        : githubStats.totalCommitsLastYear >= 1000 
+          ? `${Math.round(githubStats.totalCommitsLastYear / 1000)}K+`
+          : `${githubStats.totalCommitsLastYear}+`,
+      color: 'text-orange-400',
+      bgColor: 'bg-orange/20',
+      delay: 0.4,
+    },
   ];
 
   return (
@@ -139,7 +160,7 @@ export default function AnalyticsSection() {
           <p className="text-xl text-muted">Impact & achievements</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
