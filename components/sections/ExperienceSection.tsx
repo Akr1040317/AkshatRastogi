@@ -42,12 +42,14 @@ export default function ExperienceSection() {
               return (
                 <motion.div
                   key={exp.id}
-                  initial={{ opacity: 0, x: isEven ? -100 : 100, scale: 0.9 }}
-                  animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+                  initial={{ opacity: 0, x: isEven ? -120 : 120, scale: 0.85, rotateY: isEven ? -10 : 10 }}
+                  animate={isInView ? { opacity: 1, x: 0, scale: 1, rotateY: 0 } : {}}
                   transition={{ 
-                    duration: 0.8, 
-                    delay: index * 0.15,
+                    duration: 0.9, 
+                    delay: index * 0.12,
                     type: 'spring',
+                    stiffness: 100,
+                    damping: 12,
                     stiffness: 80,
                   }}
                   whileInView={{ x: 0, opacity: 1 }}

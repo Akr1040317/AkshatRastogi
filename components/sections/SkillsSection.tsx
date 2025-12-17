@@ -39,9 +39,14 @@ export default function SkillsSection() {
             return (
             <motion.div
               key={category.category}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ 
+                duration: 0.7, 
+                delay: categoryIndex * 0.1,
+                type: 'spring',
+                stiffness: 100,
+              }}
               className="glass-2 rounded-2xl p-6"
             >
               <h3 className={`text-xl font-bold mb-6 ${colors.text} flex items-center gap-2`}>

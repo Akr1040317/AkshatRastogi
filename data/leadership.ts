@@ -18,13 +18,11 @@ export const leadership: Leadership[] = [
     startDate: 'Mar 2020',
     endDate: 'Dec 2021',
     description:
-      'Co-founded and led CodingForCharity, a global organization that fundraises for underprivileged children by building websites for businesses and non-profits in exchange for charity donations. Built a team of 70+ members across 8 countries and coordinated the development of 40+ websites.',
+      'Co-founded and led CodingForCharity, a global organization that fundraises for underprivileged children by building websites for businesses and non-profits in exchange for charity donations.',
     achievements: [
       'Co-founded organization that grew to 70+ members across 8 countries',
-      'Led development and management of 40+ websites with e-commerce, payment processing, and mobile ordering capabilities',
-      'Received coverage from prominent local radio and TV stations recognizing the organization\'s community impact',
-      'Established partnerships with businesses and non-profits to fundraise for underprivileged children',
-      'Built and managed full-stack web solutions including WordPress customization, payment APIs, and project management systems',
+      'Led development of 40+ websites with e-commerce and payment processing',
+      'Received coverage from prominent local radio and TV stations',
     ],
   },
   {

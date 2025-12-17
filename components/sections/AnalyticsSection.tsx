@@ -166,15 +166,16 @@ export default function AnalyticsSection() {
             return (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                initial={{ opacity: 0, y: 60, scale: 0.85, rotateX: -15 }}
+                animate={isInView ? { opacity: 1, y: 0, scale: 1, rotateX: 0 } : {}}
                 transition={{ 
-                  duration: 0.6, 
+                  duration: 0.8, 
                   delay: stat.delay,
                   type: 'spring',
-                  stiffness: 100,
+                  stiffness: 120,
+                  damping: 12,
                 }}
-                whileHover={{ scale: 1.05, y: -5 }}
+                whileHover={{ scale: 1.05, y: -5, rotateX: 5 }}
                 className="glass-2 rounded-2xl p-8 text-center group cursor-pointer"
               >
                 <motion.div

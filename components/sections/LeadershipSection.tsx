@@ -31,9 +31,15 @@ export default function LeadershipSection() {
           {leadership.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              initial={{ opacity: 0, y: 50, scale: 0.9, rotateZ: -2 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1, rotateZ: 0 } : {}}
+              transition={{ 
+                duration: 0.7, 
+                delay: index * 0.15,
+                type: 'spring',
+                stiffness: 100,
+              }}
+              whileHover={{ scale: 1.02, rotateZ: 1 }}
               className="glass-2 rounded-2xl p-8 relative overflow-hidden group"
             >
               {/* Background Gradient */}
