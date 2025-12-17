@@ -128,7 +128,7 @@ export default function CommandPalette({ isOpen, onClose, onModuleChange }: Comm
                                     <kbd className="px-2 py-1 text-xs rounded glass border border-white/20 font-mono text-muted">
                                       {key}
                                     </kbd>
-                                    {idx < arr.length - 1 && <span className="text-xs text-muted">+</span>}
+                                    {idx < arr.length - 1 && <span className="text-xs text-muted/50">+</span>}
                                   </span>
                                 ))
                               ) : (
