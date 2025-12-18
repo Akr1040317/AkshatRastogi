@@ -211,6 +211,7 @@ export default function ProjectsSection() {
               </motion.div>
             );
           })}
+          </div>
         </div>
 
         {/* Project Modal */}
