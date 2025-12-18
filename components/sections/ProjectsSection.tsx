@@ -7,44 +7,64 @@ import { ExternalLink, Github, Sparkles } from 'lucide-react';
 import { projects, Project } from '@/data/projects';
 import ProjectModal from '@/components/ProjectModal';
 
-// Define varied collage layout patterns - randomized sizes and placements
-const getCardLayout = (index: number, projectId: string) => {
-  // Use project ID hash for more randomization
+// Abstract collage layout - ensure no two adjacent cards are similar
+const getCardLayout = (index: number, projectId: string, previousLayout?: { span: string; aspect: string }) => {
+  // Use project ID hash for randomization
   const hash = projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const seed = (index * 7 + hash) % 100;
+  const seed = (index * 13 + hash * 7) % 200;
   
-  // More varied patterns with different sizes
-  const patterns = [
-    // Wide landscape variations
-    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2/1]' },
-    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2.5/1]' },
-    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[3/1]' },
+  // Create many unique patterns with varied dimensions
+  const allPatterns = [
+    // Wide landscape - various widths
+    { span: 'md:col-span-2', aspect: 'aspect-[2.1/1]', orientation: 'landscape' },
+    { span: 'md:col-span-2', aspect: 'aspect-[2.3/1]', orientation: 'landscape' },
+    { span: 'md:col-span-2', aspect: 'aspect-[2.5/1]', orientation: 'landscape' },
+    { span: 'md:col-span-2', aspect: 'aspect-[2.7/1]', orientation: 'landscape' },
+    { span: 'md:col-span-2', aspect: 'aspect-[2.9/1]', orientation: 'landscape' },
+    { span: 'md:col-span-2', aspect: 'aspect-[3.1/1]', orientation: 'landscape' },
+    { span: 'md:col-span-2', aspect: 'aspect-[2.4/1]', orientation: 'landscape' },
+    { span: 'md:col-span-2', aspect: 'aspect-[2.6/1]', orientation: 'landscape' },
     
-    // Square variations
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' },
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[1.1/1]' },
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[0.9/1]' },
+    // Square-ish variations
+    { span: 'md:col-span-1', aspect: 'aspect-[1.05/1]', orientation: 'square' },
+    { span: 'md:col-span-1', aspect: 'aspect-[0.95/1]', orientation: 'square' },
+    { span: 'md:col-span-1', aspect: 'aspect-[1.15/1]', orientation: 'square' },
+    { span: 'md:col-span-1', aspect: 'aspect-[0.85/1]', orientation: 'square' },
+    { span: 'md:col-span-1', aspect: 'aspect-[1.1/1]', orientation: 'square' },
+    { span: 'md:col-span-1', aspect: 'aspect-[0.9/1]', orientation: 'square' },
     
-    // Slightly taller (but not too tall)
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[3/4]' },
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[4/5]' },
-    
-    // Medium wide
-    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2.2/1]' },
-    
-    // Small variations
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[1.2/1]' },
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[0.85/1]' },
+    // Portrait variations (slightly taller)
+    { span: 'md:col-span-1', aspect: 'aspect-[0.75/1]', orientation: 'portrait' },
+    { span: 'md:col-span-1', aspect: 'aspect-[0.8/1]', orientation: 'portrait' },
+    { span: 'md:col-span-1', aspect: 'aspect-[0.7/1]', orientation: 'portrait' },
+    { span: 'md:col-span-1', aspect: 'aspect-[0.65/1]', orientation: 'portrait' },
     
     // Extra wide
-    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2.8/1]' },
+    { span: 'md:col-span-3', aspect: 'aspect-[3.2/1]', orientation: 'landscape' },
+    { span: 'md:col-span-3', aspect: 'aspect-[3.5/1]', orientation: 'landscape' },
+    { span: 'md:col-span-3', aspect: 'aspect-[3.8/1]', orientation: 'landscape' },
     
-    // More squares
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' },
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' },
+    // Medium wide
+    { span: 'md:col-span-2', aspect: 'aspect-[2.15/1]', orientation: 'landscape' },
+    { span: 'md:col-span-2', aspect: 'aspect-[2.35/1]', orientation: 'landscape' },
+    { span: 'md:col-span-2', aspect: 'aspect-[2.55/1]', orientation: 'landscape' },
   ];
   
-  return patterns[seed % patterns.length];
+  // Filter out patterns that match previous orientation
+  let availablePatterns = allPatterns;
+  if (previousLayout) {
+    const prevOrientation = allPatterns.find(p => 
+      p.span === previousLayout.span && p.aspect === previousLayout.aspect
+    )?.orientation;
+    
+    if (prevOrientation) {
+      availablePatterns = allPatterns.filter(p => p.orientation !== prevOrientation);
+      if (availablePatterns.length === 0) availablePatterns = allPatterns;
+    }
+  }
+  
+  const selected = availablePatterns[seed % availablePatterns.length];
+  return { span: selected.span, aspect: selected.aspect };
 };
 
 export default function ProjectsSection() {
@@ -101,10 +121,13 @@ export default function ProjectsSection() {
           ))}
         </motion.div>
 
-        {/* Projects Collage Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-fr gap-4 md:gap-6">
+        {/* Projects Collage Grid - Abstract Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-min gap-4 md:gap-6">
           {filteredProjects.map((project, index) => {
-            const layout = getCardLayout(index, project.id);
+            const previousLayout = index > 0 
+              ? getCardLayout(index - 1, filteredProjects[index - 1].id)
+              : undefined;
+            const layout = getCardLayout(index, project.id, previousLayout);
             return (
               <motion.div
                 key={project.id}
