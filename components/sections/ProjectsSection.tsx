@@ -14,8 +14,8 @@ const getCardLayout = (index: number, projectId: string) => {
   const seed1 = (index * 17 + hash * 11) % 1000;
   const seed2 = (index * 23 + hash * 13) % 1000;
   
-  // Generate completely unique width in pixels (380px to 750px) - bigger cards
-  const baseWidth = 380 + (seed1 % 371); // 380-750px
+  // Generate completely unique width in pixels (450px to 850px) - bigger cards
+  const baseWidth = 450 + (seed1 % 401); // 450-850px
   
   // Generate unique aspect ratio (0.65 to 2.8) - ensures no two are the same
   const aspectRatio = 0.65 + (seed2 % 216) / 100; // 0.65 to 2.8 with many variations
@@ -99,7 +99,7 @@ export default function ProjectsSection() {
                   style={{
                     width: layout.width,
                     height: layout.height,
-                    minWidth: '380px',
+                    minWidth: '450px',
                     maxWidth: '100%',
                   }}
                   onClick={() => setSelectedProject(project)}
