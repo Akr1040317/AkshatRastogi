@@ -31,43 +31,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: 'hive-prepcenter',
-    name: 'PrepCenter UAE',
-    tagline: 'Official studying platform for Spelling Bee Championship UAE',
-    description:
-      'The official studying platform and technology & education partner for the Spelling Bee Championship UAE, featuring round-based word lists, four study modes, analytics, and leaderboards.',
-    category: 'featured',
-    startDate: '2024',
-    role: 'Technical Lead & Developer',
-    problem:
-      'Competitors needed a comprehensive, official platform to prepare for the Spelling Bee Championship UAE with structured study materials and progress tracking.',
-    solution:
-      'Built a Next.js web platform with Firebase backend, featuring round-based word lists, multiple study modes (flashcards, practice tests, spelling challenges, word origins), real-time analytics, and competitive leaderboards.',
-    technicalHighlights: [
-      'Next.js with Tailwind CSS for responsive, modern UI',
-      'Firebase for real-time data synchronization',
-      'Google Cloud Functions for backend processing',
-      'Advanced analytics dashboard for progress tracking',
-      'Leaderboard system with real-time updates',
-    ],
-    outcome:
-      'Successfully launched as the official platform, serving hundreds of competitors with comprehensive study tools and analytics.',
-    technologies: [
-      'Next.js',
-      'Tailwind CSS',
-      'Firebase',
-      'Google Cloud Functions',
-      'React.js',
-    ],
-    links: {
-      website: 'https://hivespelling.com/prepcenter',
-    },
-    stats: [
-      { label: 'Competitors', value: 'Hundreds' },
-      { label: 'Study Modes', value: '4' },
-    ],
-  },
-  {
     id: 'hive-app',
     name: 'Hive iOS App',
     tagline: 'Pattern-based spelling education platform',
@@ -100,8 +63,8 @@ export const projects: Project[] = [
       'GPT-4 API',
     ],
     links: {
-      appStore: 'https://apps.apple.com/app/hive-spell-intelligently',
-      website: 'https://hivespelling.com',
+      appStore: 'https://apps.apple.com/us/app/hive-spelling-bee-prep-app/id6479415050',
+      website: 'https://www.hivespelling.com',
     },
     stats: [
       { label: 'Students', value: '600+' },
@@ -144,8 +107,45 @@ export const projects: Project[] = [
       'Node.js',
     ],
     links: {
-      website: 'https://hivespelling.com',
+      website: 'https://www.hivespelling.com',
     },
+  },
+  {
+    id: 'hive-prepcenter',
+    name: 'PrepCenter UAE',
+    tagline: 'Official studying platform for Spelling Bee Championship UAE',
+    description:
+      'The official studying platform and technology & education partner for the Spelling Bee Championship UAE, featuring round-based word lists, four study modes, analytics, and leaderboards.',
+    category: 'featured',
+    startDate: '2024',
+    role: 'Technical Lead & Developer',
+    problem:
+      'Competitors needed a comprehensive, official platform to prepare for the Spelling Bee Championship UAE with structured study materials and progress tracking.',
+    solution:
+      'Built a Next.js web platform with Firebase backend, featuring round-based word lists, multiple study modes (flashcards, practice tests, spelling challenges, word origins), real-time analytics, and competitive leaderboards.',
+    technicalHighlights: [
+      'Next.js with Tailwind CSS for responsive, modern UI',
+      'Firebase for real-time data synchronization',
+      'Google Cloud Functions for backend processing',
+      'Advanced analytics dashboard for progress tracking',
+      'Leaderboard system with real-time updates',
+    ],
+    outcome:
+      'Successfully launched as the official platform, serving hundreds of competitors with comprehensive study tools and analytics.',
+    technologies: [
+      'Next.js',
+      'Tailwind CSS',
+      'Firebase',
+      'Google Cloud Functions',
+      'React.js',
+    ],
+    links: {
+      website: 'https://learn.spellingbee.ae',
+    },
+    stats: [
+      { label: 'Competitors', value: 'Hundreds' },
+      { label: 'Study Modes', value: '4' },
+    ],
   },
   {
     id: 'codingforcharity',
@@ -303,7 +303,7 @@ export const projects: Project[] = [
       'PDF Generation',
     ],
     links: {
-      website: 'https://marketatomy.com/bhc',
+      website: 'https://www.marketatomy.com/bhc',
     },
     stats: [
       { label: 'Modules', value: '21' },
@@ -327,7 +327,9 @@ export const projects: Project[] = [
     ],
     outcome: 'Functional IPL simulation tool.',
     technologies: ['Python', 'Data Analysis', 'Statistics'],
-    links: {},
+    links: {
+      website: 'https://ipl-2025-beta.vercel.app',
+    },
   },
   {
     id: 'nextgenwellness',
@@ -346,7 +348,9 @@ export const projects: Project[] = [
     ],
     outcome: 'Wellness platform prototype.',
     technologies: ['React.js', 'Node.js', 'Health APIs'],
-    links: {},
+    links: {
+      website: 'https://next-gen-wellness.vercel.app',
+    },
   },
   {
     id: 'gatortrips',
@@ -365,7 +369,9 @@ export const projects: Project[] = [
     ],
     outcome: 'Travel platform prototype.',
     technologies: ['Next.js', 'Travel APIs', 'Payment Processing'],
-    links: {},
+    links: {
+      website: 'https://gator-trips.vercel.app',
+    },
   },
 ];
 
