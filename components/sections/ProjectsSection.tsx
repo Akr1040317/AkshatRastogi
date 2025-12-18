@@ -24,11 +24,17 @@ const getCardLayout = (index: number, projectId: string) => {
     baseWidth = 400 + (seed1 % 251); // 400-650px
   }
   
-  // Generate unique aspect ratio (0.65 to 2.8) - ensures no two are the same
-  const aspectRatio = 0.65 + (seed2 % 216) / 100; // 0.65 to 2.8 with many variations
+  // Generate unique aspect ratio (0.7 to 2.2) - narrower range to prevent too tall/short cards
+  const aspectRatio = 0.7 + (seed2 % 151) / 100; // 0.7 to 2.2 with many variations
   
   // Calculate height from width and aspect ratio
-  const height = baseWidth / aspectRatio;
+  let height = baseWidth / aspectRatio;
+  
+  // Ensure minimum height to prevent text cutoff (at least 400px for content)
+  const minHeight = 400;
+  if (height < minHeight) {
+    height = minHeight;
+  }
   
   return {
     width: `${baseWidth}px`,
@@ -111,12 +117,12 @@ export default function ProjectsSection() {
                   }}
                   onClick={() => setSelectedProject(project)}
                 >
-                  <div className="glass-2 rounded-2xl overflow-hidden w-full h-full border border-white/10 hover:border-purple/30 transition-all relative flex flex-col">
+                  <div className="glass-2 rounded-2xl overflow-hidden w-full h-full border border-white/10 hover:border-purple/30 transition-all relative flex flex-col min-h-[400px]">
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-pink/10 via-purple/10 to-blue/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
                     
                     {/* Project Media */}
-                    <div className="relative w-full flex-shrink-0 bg-gradient-to-br from-pink/20 via-purple/20 to-blue/20 overflow-hidden" style={{ height: '60%' }}>
+                    <div className="relative w-full flex-shrink-0 bg-gradient-to-br from-pink/20 via-purple/20 to-blue/20 overflow-hidden" style={{ minHeight: '200px', height: '50%' }}>
                       {project.media && project.media.length > 0 ? (
                         project.media[0].type === 'video' ? (
                           <video
