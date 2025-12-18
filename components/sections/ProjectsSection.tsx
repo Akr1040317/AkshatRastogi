@@ -7,64 +7,27 @@ import { ExternalLink, Github, Sparkles } from 'lucide-react';
 import { projects, Project } from '@/data/projects';
 import ProjectModal from '@/components/ProjectModal';
 
-// Abstract collage layout - ensure no two adjacent cards are similar
-const getCardLayout = (index: number, projectId: string, previousLayout?: { span: string; aspect: string }) => {
-  // Use project ID hash for randomization
-  const hash = projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const seed = (index * 13 + hash * 7) % 200;
+// Truly randomized abstract layout - each card gets completely unique dimensions
+const getCardLayout = (index: number, projectId: string) => {
+  // Create unique hash from project ID
+  const hash = projectId.split('').reduce((acc, char, i) => acc + char.charCodeAt(0) * (i + 1), 0);
+  const seed1 = (index * 17 + hash * 11) % 1000;
+  const seed2 = (index * 23 + hash * 13) % 1000;
   
-  // Create many unique patterns with varied dimensions
-  const allPatterns = [
-    // Wide landscape - various widths
-    { span: 'md:col-span-2', aspect: 'aspect-[2.1/1]', orientation: 'landscape' },
-    { span: 'md:col-span-2', aspect: 'aspect-[2.3/1]', orientation: 'landscape' },
-    { span: 'md:col-span-2', aspect: 'aspect-[2.5/1]', orientation: 'landscape' },
-    { span: 'md:col-span-2', aspect: 'aspect-[2.7/1]', orientation: 'landscape' },
-    { span: 'md:col-span-2', aspect: 'aspect-[2.9/1]', orientation: 'landscape' },
-    { span: 'md:col-span-2', aspect: 'aspect-[3.1/1]', orientation: 'landscape' },
-    { span: 'md:col-span-2', aspect: 'aspect-[2.4/1]', orientation: 'landscape' },
-    { span: 'md:col-span-2', aspect: 'aspect-[2.6/1]', orientation: 'landscape' },
-    
-    // Square-ish variations
-    { span: 'md:col-span-1', aspect: 'aspect-[1.05/1]', orientation: 'square' },
-    { span: 'md:col-span-1', aspect: 'aspect-[0.95/1]', orientation: 'square' },
-    { span: 'md:col-span-1', aspect: 'aspect-[1.15/1]', orientation: 'square' },
-    { span: 'md:col-span-1', aspect: 'aspect-[0.85/1]', orientation: 'square' },
-    { span: 'md:col-span-1', aspect: 'aspect-[1.1/1]', orientation: 'square' },
-    { span: 'md:col-span-1', aspect: 'aspect-[0.9/1]', orientation: 'square' },
-    
-    // Portrait variations (slightly taller)
-    { span: 'md:col-span-1', aspect: 'aspect-[0.75/1]', orientation: 'portrait' },
-    { span: 'md:col-span-1', aspect: 'aspect-[0.8/1]', orientation: 'portrait' },
-    { span: 'md:col-span-1', aspect: 'aspect-[0.7/1]', orientation: 'portrait' },
-    { span: 'md:col-span-1', aspect: 'aspect-[0.65/1]', orientation: 'portrait' },
-    
-    // Extra wide
-    { span: 'md:col-span-3', aspect: 'aspect-[3.2/1]', orientation: 'landscape' },
-    { span: 'md:col-span-3', aspect: 'aspect-[3.5/1]', orientation: 'landscape' },
-    { span: 'md:col-span-3', aspect: 'aspect-[3.8/1]', orientation: 'landscape' },
-    
-    // Medium wide
-    { span: 'md:col-span-2', aspect: 'aspect-[2.15/1]', orientation: 'landscape' },
-    { span: 'md:col-span-2', aspect: 'aspect-[2.35/1]', orientation: 'landscape' },
-    { span: 'md:col-span-2', aspect: 'aspect-[2.55/1]', orientation: 'landscape' },
-  ];
+  // Generate completely unique width in pixels (280px to 600px)
+  const baseWidth = 280 + (seed1 % 321); // 280-600px
   
-  // Filter out patterns that match previous orientation
-  let availablePatterns = allPatterns;
-  if (previousLayout) {
-    const prevOrientation = allPatterns.find(p => 
-      p.span === previousLayout.span && p.aspect === previousLayout.aspect
-    )?.orientation;
-    
-    if (prevOrientation) {
-      availablePatterns = allPatterns.filter(p => p.orientation !== prevOrientation);
-      if (availablePatterns.length === 0) availablePatterns = allPatterns;
-    }
-  }
+  // Generate unique aspect ratio (0.65 to 2.8) - ensures no two are the same
+  const aspectRatio = 0.65 + (seed2 % 216) / 100; // 0.65 to 2.8 with many variations
   
-  const selected = availablePatterns[seed % availablePatterns.length];
-  return { span: selected.span, aspect: selected.aspect };
+  // Calculate height from width and aspect ratio
+  const height = baseWidth / aspectRatio;
+  
+  return {
+    width: `${baseWidth}px`,
+    height: `${height}px`,
+    aspectRatio: `${aspectRatio}`,
+  };
 };
 
 export default function ProjectsSection() {
@@ -121,28 +84,32 @@ export default function ProjectsSection() {
           ))}
         </motion.div>
 
-        {/* Projects Collage Grid - Abstract Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-min gap-4 md:gap-6">
-          {filteredProjects.map((project, index) => {
-            const previousLayout = index > 0 
-              ? getCardLayout(index - 1, filteredProjects[index - 1].id)
-              : undefined;
-            const layout = getCardLayout(index, project.id, previousLayout);
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.08 }}
-                className={`group cursor-pointer ${layout.span}`}
-                onClick={() => setSelectedProject(project)}
-              >
-                <div className="glass-2 rounded-2xl overflow-hidden h-full border border-white/10 hover:border-purple/30 transition-all relative">
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-pink/10 via-purple/10 to-blue/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                  
-                  {/* Project Media */}
-                  <div className={`relative ${layout.aspect} bg-gradient-to-br from-pink/20 via-purple/20 to-blue/20 overflow-hidden`}>
+        {/* Projects Collage - Truly Randomized Abstract Layout */}
+        <div className="relative w-full">
+          <div className="flex flex-wrap gap-4 md:gap-6 justify-start items-start content-start">
+            {filteredProjects.map((project, index) => {
+              const layout = getCardLayout(index, project.id);
+              return (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                  transition={{ duration: 0.6, delay: index * 0.08 }}
+                  className="group cursor-pointer flex-shrink-0"
+                  style={{
+                    width: layout.width,
+                    height: layout.height,
+                    minWidth: '280px',
+                    maxWidth: '100%',
+                  }}
+                  onClick={() => setSelectedProject(project)}
+                >
+                  <div className="glass-2 rounded-2xl overflow-hidden w-full h-full border border-white/10 hover:border-purple/30 transition-all relative">
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-pink/10 via-purple/10 to-blue/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                    
+                    {/* Project Media */}
+                    <div className="relative w-full h-full bg-gradient-to-br from-pink/20 via-purple/20 to-blue/20 overflow-hidden">
                     {project.media && project.media.length > 0 ? (
                       project.media[0].type === 'video' ? (
                         <video
