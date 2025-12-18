@@ -29,7 +29,7 @@ export default function ProjectDrawer({ project, isOpen, onClose }: ProjectDrawe
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-4xl md:max-h-[90vh] z-[91] overflow-hidden"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-4xl max-h-[90vh] z-[91] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="h-full md:h-auto bg-bg-1 glass-2 rounded-2xl border border-white/10 shadow-2xl overflow-y-auto">
