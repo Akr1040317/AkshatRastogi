@@ -7,19 +7,44 @@ import { ExternalLink, Github, Sparkles } from 'lucide-react';
 import { projects, Project } from '@/data/projects';
 import ProjectModal from '@/components/ProjectModal';
 
-// Define collage layout patterns - mix of sizes, avoiding very tall cards
-const getCardLayout = (index: number) => {
+// Define varied collage layout patterns - randomized sizes and placements
+const getCardLayout = (index: number, projectId: string) => {
+  // Use project ID hash for more randomization
+  const hash = projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const seed = (index * 7 + hash) % 100;
+  
+  // More varied patterns with different sizes
   const patterns = [
-    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2/1]' }, // Wide landscape
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
-    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2/1]' }, // Wide landscape
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
-    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2/1]' }, // Wide landscape
-    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
+    // Wide landscape variations
+    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2/1]' },
+    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2.5/1]' },
+    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[3/1]' },
+    
+    // Square variations
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' },
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[1.1/1]' },
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[0.9/1]' },
+    
+    // Slightly taller (but not too tall)
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[3/4]' },
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[4/5]' },
+    
+    // Medium wide
+    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2.2/1]' },
+    
+    // Small variations
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[1.2/1]' },
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-[0.85/1]' },
+    
+    // Extra wide
+    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2.8/1]' },
+    
+    // More squares
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' },
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' },
   ];
-  return patterns[index % patterns.length];
+  
+  return patterns[seed % patterns.length];
 };
 
 export default function ProjectsSection() {
@@ -79,7 +104,7 @@ export default function ProjectsSection() {
         {/* Projects Collage Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-fr gap-4 md:gap-6">
           {filteredProjects.map((project, index) => {
-            const layout = getCardLayout(index);
+            const layout = getCardLayout(index, project.id);
             return (
               <motion.div
                 key={project.id}
