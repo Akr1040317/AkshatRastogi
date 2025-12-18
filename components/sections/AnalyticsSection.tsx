@@ -200,9 +200,9 @@ export default function AnalyticsSection() {
     },
     {
       icon: GitBranch,
-      label: 'Commits (Last Year)',
-      numericValue: githubStats.totalCommitsLastYear,
-      isLoading: githubStats.loading,
+      label: 'Commits in 2025',
+      numericValue: 243,
+      isLoading: false,
       color: 'text-orange-400',
       bgColor: 'bg-orange/20',
       delay: 0.4,

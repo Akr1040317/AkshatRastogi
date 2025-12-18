@@ -211,55 +211,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 'gathr',
-    name: 'Gathr - Campus Involvement App',
-    tagline: 'Connecting clubs and students on campus',
-    description:
-      'Launched a campus engagement iOS app with a social media-like interface connecting clubs and students, gaining 700+ UF students, 60+ organizations, and 20,000+ views on social media campaigns within the first 3 weeks.',
-    category: 'featured',
-    startDate: 'Apr 2024',
-    endDate: 'Nov 2024',
-    role: 'Co-Founder, iOS Developer, Head of Marketing',
-    problem:
-      'UF students struggled to discover and engage with campus organizations. There was no centralized platform for club-student interaction.',
-    solution:
-      'Built an iOS app with social media-like interface, Firebase Authentication with GatorLink login for UF-student-only access, push notifications via FCM, and Google Analytics integration.',
-    technicalHighlights: [
-      'Native iOS development',
-      'Firebase Authentication',
-      'GatorLink SSO integration',
-      'Push notifications (FCM)',
-      'Google Analytics',
-      'Social media-like feed',
-      'Club discovery and filtering',
-    ],
-    outcome:
-      '700+ UF students, 60+ organizations, 20,000+ social media views within first 3 weeks.',
-    technologies: [
-      'Swift',
-      'iOS',
-      'Firebase',
-      'FCM',
-      'Google Analytics',
-      'SwiftUI',
-    ],
-    links: {
-      website: 'https://getgathr.app',
-    },
-    media: [
-      {
-        type: 'image',
-        url: '/projects/gathr.png',
-        alt: 'Gathr - Campus involvement app landing page showing event details and campus community features',
-      },
-    ],
-    stats: [
-      { label: 'Students', value: '700+' },
-      { label: 'Organizations', value: '60+' },
-      { label: 'Social Views', value: '20,000+' },
-    ],
-  },
-  {
     id: 'internify',
     name: 'Internify',
     tagline: 'Job and internship search engine',

@@ -22,10 +22,11 @@ export const experiences: Experience[] = [
     endDate: 'Present',
     type: 'Full-time',
     description:
-      'Develop C software for Flight Management System in a safety-critical avionics environment, contributing to next-generation cockpits. Perform system, HLR, LLR, and SLR requirement updates and formalizations with full traceability aligned to DO-178C standards.',
+      'Develop C software for Flight Management System in a safety-critical avionics environment, contributing to next-generation cockpits.',
     highlights: [
-      'Extended the Netrikann remote-testing tool by adding touch-interaction and event-simulation features, enabling remote hardware-bench validation for global teams and reducing manual integration test effort.',
+      'Develop C software for Flight Management System in a safety-critical avionics environment, contributing to next-generation cockpits.',
       'Perform system, HLR, LLR, and SLR requirement updates and formalizations with full traceability aligned to DO-178C standards.',
+      'Extended the Netrikann remote-testing tool by adding touch-interaction and event-simulation features, enabling remote hardware-bench validation for global teams and reducing manual integration test effort.',
     ],
     technologies: ['C', 'DO-178C', 'Avionics', 'Flight Management Systems'],
   },
@@ -40,6 +41,7 @@ export const experiences: Experience[] = [
     description:
       'Built Hive\'s iOS app and web platform used by 600+ students and piloted with multiple school districts, delivering 60+ pattern-based lessons and quizzes on roots, patterns, and language origins.',
     highlights: [
+      'Built Hive\'s iOS app and web platform used by 600+ students and piloted with multiple school districts, delivering 60+ pattern-based lessons and quizzes on roots, patterns, and language origins.',
       'Established partnership with Merriam-Webster, integrating API with GPT-4 for sentence generation, explanations, and feedback.',
       'Engineered PrepCenter™, the official studying platform and technology & education partner for the Spelling Bee Championship UAE, with round-based word lists, four study modes, analytics, and leaderboards for hundreds of competitors.',
       'Developed a Next.js/Tailwind educator dashboard, optimized backend using API pagination, caching, lazy instantiation, Firebase, and Google Cloud Functions, and added custom list-creation tools while prototyping an SLM-based tutor for adaptive coaching.',
@@ -69,6 +71,7 @@ export const experiences: Experience[] = [
     description:
       'Developed a customer-facing feature in NX-CAD using C++ and HTML rendering to modernize the 2D Cross-Section View, enabling real-time cable layout visualization with color-coded data for industrial engineering projects.',
     highlights: [
+      'Developed a customer-facing feature in NX-CAD using C++ and HTML rendering to modernize the 2D Cross-Section View, enabling real-time cable layout visualization with color-coded data for industrial engineering projects.',
       'Led sprint planning & task prioritization in a scrum-based Agile environment, collaborating with international teams to develop & integrate real-time data retrieval using Object Manager & C++, improving data accuracy & cost efficiency.',
       'Addressed production bugs, introduced a Multi-Tiered Labels feature, and implemented unit tests to ensure reliability.',
     ],
@@ -85,6 +88,7 @@ export const experiences: Experience[] = [
     description:
       'Led full-stack web development of a 21-module business health assessment platform for optimizing business growth strategies.',
     highlights: [
+      'Led full-stack web development of a 21-module business health assessment platform for optimizing business growth strategies.',
       'Implemented a secure user login/registration system with OTP verification & hashing/encryption techniques.',
       'Employed PHP PDO with parameterized queries to secure the back end against XSS & SQLi attacks, while managing the MySQL database and generating server-side PDF reports for clients.',
     ],
@@ -110,6 +114,7 @@ export const experiences: Experience[] = [
     description:
       'Founded CodingForCharity, an organization with 70+ members across 8 countries that fundraises for underprivileged children by building websites for businesses/non-profits in exchange for charity donations.',
     highlights: [
+      'Founded CodingForCharity, an organization with 70+ members across 8 countries that fundraises for underprivileged children by building websites for businesses/non-profits in exchange for charity donations.',
       'Implemented full-stack web development across e-commerce, paywalls, and mobile ordering, developed/managed 40+ websites.',
       'Received coverage from prominent local radio and TV stations in recognition of CodingForCharity\'s impact.',
     ],
