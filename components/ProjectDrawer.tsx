@@ -29,258 +29,174 @@ export default function ProjectDrawer({ project, isOpen, onClose }: ProjectDrawe
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-4xl max-h-[90vh] z-[91] overflow-hidden"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-3xl max-h-[85vh] z-[91] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="h-full md:h-auto bg-bg-1 glass-2 rounded-2xl border border-white/10 shadow-2xl overflow-y-auto">
-              {/* Header with Gradient */}
-              <div className="sticky top-0 glass-2 border-b border-white/10 p-6 md:p-8 backdrop-blur-xl z-10">
-                <div className="flex items-start justify-between gap-4 mb-4">
-                  <div className="flex-1">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-2 gradient-text">{project.name}</h2>
-                    <p className="text-muted text-lg">{project.tagline}</p>
+            <div className="bg-bg-1 glass-2 rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden">
+              {/* Header */}
+              <div className="flex-shrink-0 glass-2 border-b border-white/10 p-4 md:p-6">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-1 gradient-text truncate">{project.name}</h2>
+                    <p className="text-muted text-sm md:text-base truncate">{project.tagline}</p>
                   </div>
                   <motion.button
                     onClick={onClose}
                     whileHover={{ scale: 1.1, rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
-                    className="p-2 rounded-xl glass hover:glass-2 transition-all flex-shrink-0"
+                    className="p-2 rounded-lg glass hover:glass-2 transition-all flex-shrink-0"
                   >
-                    <X size={24} />
+                    <X size={20} />
                   </motion.button>
                 </div>
                 
                 {/* Project Meta */}
-                <div className="flex flex-wrap items-center gap-4 text-sm">
-                  <div className="flex items-center gap-2 text-muted">
-                    <Calendar size={16} />
+                <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm">
+                  <div className="flex items-center gap-1.5 text-muted">
+                    <Calendar size={14} />
                     <span>{project.startDate} {project.endDate && `- ${project.endDate}`}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-muted">
-                    <Code size={16} />
-                    <span>{project.role}</span>
+                  <div className="flex items-center gap-1.5 text-muted">
+                    <Code size={14} />
+                    <span className="truncate max-w-[200px]">{project.role}</span>
                   </div>
                   {project.category === 'featured' && (
-                    <div className="ml-auto px-3 py-1 rounded-full bg-purple/20 text-purple text-xs font-semibold">
-                      Featured Project
+                    <div className="ml-auto px-2 py-1 rounded-full bg-purple/20 text-purple text-xs font-semibold">
+                      Featured
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="p-6 md:p-8 space-y-8">
-                {/* Media - Hero Image */}
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-5">
+                {/* Media */}
                 {project.media && project.media.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="space-y-4"
-                  >
+                  <div className="rounded-xl overflow-hidden border border-white/10">
                     {project.media.map((media, i) => (
-                      <div key={i} className="rounded-2xl overflow-hidden border border-white/10 shadow-xl">
+                      <div key={i}>
                         {media.type === 'video' ? (
-                          <video
-                            src={media.url}
-                            controls
-                            className="w-full"
-                            autoPlay
-                            loop
-                          />
+                          <video src={media.url} controls className="w-full" />
                         ) : (
-                          <img
-                            src={media.url}
-                            alt={media.alt}
-                            className="w-full h-auto object-cover"
-                          />
+                          <img src={media.url} alt={media.alt} className="w-full h-auto" />
                         )}
                       </div>
                     ))}
-                  </motion.div>
+                  </div>
                 )}
 
-                {/* Stats - Enhanced Cards */}
+                {/* Stats */}
                 {project.stats && project.stats.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="grid grid-cols-2 md:grid-cols-3 gap-4"
-                  >
+                  <div className="grid grid-cols-3 gap-3">
                     {project.stats.map((stat, i) => (
-                      <div
-                        key={i}
-                        className="glass-2 rounded-xl p-5 text-center border border-white/10 hover:border-purple/50 transition-all group"
-                      >
-                        <div className="text-3xl font-bold gradient-text mb-1 group-hover:scale-110 transition-transform">
-                          {stat.value}
-                        </div>
-                        <div className="text-sm text-muted">{stat.label}</div>
+                      <div key={i} className="glass rounded-lg p-3 text-center border border-white/10">
+                        <div className="text-xl md:text-2xl font-bold gradient-text">{stat.value}</div>
+                        <div className="text-xs text-muted mt-1">{stat.label}</div>
                       </div>
                     ))}
-                  </motion.div>
+                  </div>
                 )}
 
                 {/* Description */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                  className="glass-2 rounded-xl p-6 border border-white/10"
-                >
-                  <p className="text-muted leading-relaxed">{project.description}</p>
-                </motion.div>
+                <div>
+                  <p className="text-muted text-sm leading-relaxed">{project.description}</p>
+                </div>
 
-                {/* Problem & Solution Side by Side */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="glass-2 rounded-xl p-6 border border-pink/20"
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="p-2 rounded-lg bg-pink/20">
-                        <Target size={20} className="text-pink" />
-                      </div>
-                      <h3 className="text-xl font-bold text-pink">Problem</h3>
+                {/* Problem & Solution */}
+                <div className="space-y-4">
+                  <div className="glass rounded-lg p-4 border border-pink/20">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Target size={16} className="text-pink" />
+                      <h3 className="text-base font-bold text-pink">Problem</h3>
                     </div>
-                    <p className="text-muted leading-relaxed">{project.problem}</p>
-                  </motion.div>
+                    <p className="text-muted text-sm leading-relaxed">{project.problem}</p>
+                  </div>
 
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.25 }}
-                    className="glass-2 rounded-xl p-6 border border-purple/20"
-                  >
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="p-2 rounded-lg bg-purple/20">
-                        <Lightbulb size={20} className="text-purple" />
-                      </div>
-                      <h3 className="text-xl font-bold text-purple">Solution</h3>
+                  <div className="glass rounded-lg p-4 border border-purple/20">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Lightbulb size={16} className="text-purple" />
+                      <h3 className="text-base font-bold text-purple">Solution</h3>
                     </div>
-                    <p className="text-muted leading-relaxed">{project.solution}</p>
-                  </motion.div>
+                    <p className="text-muted text-sm leading-relaxed">{project.solution}</p>
+                  </div>
                 </div>
 
                 {/* Technical Highlights */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="glass-2 rounded-xl p-6 border border-blue/20"
-                >
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="p-2 rounded-lg bg-blue/20">
-                      <Code size={20} className="text-blue" />
-                    </div>
-                    <h3 className="text-xl font-bold text-blue">Technical Highlights</h3>
+                <div className="glass rounded-lg p-4 border border-blue/20">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Code size={16} className="text-blue" />
+                    <h3 className="text-base font-bold text-blue">Technical Highlights</h3>
                   </div>
-                  <ul className="space-y-3">
+                  <ul className="space-y-2">
                     {project.technicalHighlights.map((highlight, i) => (
-                      <motion.li
-                        key={i}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.35 + i * 0.05 }}
-                        className="flex items-start gap-3"
-                      >
-                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-purple flex-shrink-0" />
-                        <span className="text-muted leading-relaxed">{highlight}</span>
-                      </motion.li>
+                      <li key={i} className="flex items-start gap-2 text-sm text-muted">
+                        <span className="text-purple mt-1">•</span>
+                        <span>{highlight}</span>
+                      </li>
                     ))}
                   </ul>
-                </motion.div>
+                </div>
 
                 {/* Outcome */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="glass-2 rounded-xl p-6 border border-orange/20"
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="p-2 rounded-lg bg-orange/20">
-                      <Trophy size={20} className="text-orange" />
-                    </div>
-                    <h3 className="text-xl font-bold text-orange">Outcome</h3>
+                <div className="glass rounded-lg p-4 border border-orange/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Trophy size={16} className="text-orange" />
+                    <h3 className="text-base font-bold text-orange">Outcome</h3>
                   </div>
-                  <p className="text-muted leading-relaxed">{project.outcome}</p>
-                </motion.div>
+                  <p className="text-muted text-sm leading-relaxed">{project.outcome}</p>
+                </div>
 
                 {/* Technologies */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.45 }}
-                  className="glass-2 rounded-xl p-6 border border-white/10"
-                >
-                  <h3 className="text-xl font-bold mb-4">Technologies</h3>
+                <div className="glass rounded-lg p-4 border border-white/10">
+                  <h3 className="text-base font-bold mb-3">Technologies</h3>
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech, i) => (
-                      <motion.span
+                      <span
                         key={i}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.5 + i * 0.03 }}
-                        whileHover={{ scale: 1.05 }}
-                        className="px-4 py-2 rounded-lg glass text-sm font-medium hover:glass-2 transition-all"
+                        className="px-3 py-1 rounded-lg glass text-xs font-medium"
                       >
                         {tech}
-                      </motion.span>
+                      </span>
                     ))}
                   </div>
-                </motion.div>
+                </div>
 
-                {/* Links - Enhanced */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="flex flex-wrap gap-3 pt-6 border-t border-white/10"
-                >
+                {/* Links */}
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
                   {project.links.website && (
-                    <motion.a
+                    <a
                       href={project.links.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-5 py-3 rounded-xl glass-2 hover:glass border border-white/10 hover:border-purple/50 transition-all group"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass hover:glass-2 transition-all text-sm"
                     >
-                      <ExternalLink size={18} className="text-purple group-hover:rotate-[-45deg] transition-transform" />
-                      <span className="font-medium">Visit Website</span>
-                    </motion.a>
+                      <ExternalLink size={16} className="text-purple" />
+                      <span>Website</span>
+                    </a>
                   )}
                   {project.links.github && (
-                    <motion.a
+                    <a
                       href={project.links.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-5 py-3 rounded-xl glass-2 hover:glass border border-white/10 hover:border-purple/50 transition-all group"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass hover:glass-2 transition-all text-sm"
                     >
-                      <Github size={18} className="text-purple group-hover:scale-110 transition-transform" />
-                      <span className="font-medium">View Code</span>
-                    </motion.a>
+                      <Github size={16} className="text-purple" />
+                      <span>GitHub</span>
+                    </a>
                   )}
                   {project.links.appStore && (
-                    <motion.a
+                    <a
                       href={project.links.appStore}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-5 py-3 rounded-xl glass-2 hover:glass border border-white/10 hover:border-purple/50 transition-all group"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass hover:glass-2 transition-all text-sm"
                     >
-                      <ExternalLink size={18} className="text-purple group-hover:rotate-[-45deg] transition-transform" />
-                      <span className="font-medium">App Store</span>
-                    </motion.a>
+                      <ExternalLink size={16} className="text-purple" />
+                      <span>App Store</span>
+                    </a>
                   )}
-                </motion.div>
+                </div>
               </div>
             </div>
           </motion.div>
