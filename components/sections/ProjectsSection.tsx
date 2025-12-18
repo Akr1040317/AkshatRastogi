@@ -7,15 +7,15 @@ import { ExternalLink, Github, Sparkles } from 'lucide-react';
 import { projects, Project } from '@/data/projects';
 import ProjectModal from '@/components/ProjectModal';
 
-// Define collage layout patterns - mix of sizes and orientations
+// Define collage layout patterns - mix of sizes, avoiding very tall cards
 const getCardLayout = (index: number) => {
   const patterns = [
-    { span: 'md:col-span-2 md:row-span-2', aspect: 'aspect-[4/3]' }, // Large landscape
-    { span: 'md:col-span-1 md:row-span-2', aspect: 'aspect-[3/4]' }, // Portrait
+    { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2/1]' }, // Wide landscape
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
     { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
     { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2/1]' }, // Wide landscape
     { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
-    { span: 'md:col-span-1 md:row-span-2', aspect: 'aspect-[3/4]' }, // Portrait
+    { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
     { span: 'md:col-span-2 md:row-span-1', aspect: 'aspect-[2/1]' }, // Wide landscape
     { span: 'md:col-span-1 md:row-span-1', aspect: 'aspect-square' }, // Square
   ];
@@ -129,32 +129,32 @@ export default function ProjectsSection() {
                   </div>
 
                   {/* Card Content */}
-                  <div className="p-4 md:p-6 relative z-10">
-                    <h3 className="text-xl md:text-2xl font-bold mb-2 group-hover:text-purple transition-colors">
+                  <div className="p-3 md:p-4 relative z-10">
+                    <h3 className="text-lg md:text-xl font-bold mb-1 group-hover:text-purple transition-colors line-clamp-1">
                       {project.name}
                     </h3>
-                    <p className="text-muted text-sm mb-3 line-clamp-2">{project.tagline}</p>
+                    <p className="text-muted text-xs mb-2 line-clamp-1">{project.tagline}</p>
                     
                     {/* Tech Stack Pills */}
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {project.technologies.slice(0, 3).map((tech, i) => (
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {project.technologies.slice(0, 2).map((tech, i) => (
                         <span
                           key={i}
-                          className="px-2 py-1 text-xs rounded-lg glass"
+                          className="px-1.5 py-0.5 text-xs rounded-lg glass"
                         >
                           {tech}
                         </span>
                       ))}
-                      {project.technologies.length > 3 && (
-                        <span className="px-2 py-1 text-xs rounded-lg glass text-muted">
-                          +{project.technologies.length - 3}
+                      {project.technologies.length > 2 && (
+                        <span className="px-1.5 py-0.5 text-xs rounded-lg glass text-muted">
+                          +{project.technologies.length - 2}
                         </span>
                       )}
                     </div>
 
                     {/* Stats or Description */}
                     {project.stats && project.stats.length > 0 ? (
-                      <div className="flex gap-3 text-xs md:text-sm">
+                      <div className="flex gap-2 text-xs">
                         {project.stats.slice(0, 2).map((stat, i) => (
                           <div key={i} className="flex items-center gap-1">
                             <span className="text-purple font-bold">{stat.value}</span>
@@ -163,20 +163,20 @@ export default function ProjectsSection() {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-xs md:text-sm text-muted line-clamp-2">{project.description}</p>
+                      <p className="text-xs text-muted line-clamp-1">{project.description}</p>
                     )}
 
                     {/* Links */}
-                    <div className="flex gap-2 mt-4 pt-4 border-t border-white/10">
+                    <div className="flex gap-1.5 mt-3 pt-3 border-t border-white/10">
                       {project.links.website && (
                         <a
                           href={project.links.website}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="p-2 rounded-lg glass hover:glass-2 transition-all"
+                          className="p-1.5 rounded-lg glass hover:glass-2 transition-all"
                         >
-                          <ExternalLink size={14} />
+                          <ExternalLink size={12} />
                         </a>
                       )}
                       {project.links.github && (
@@ -185,9 +185,9 @@ export default function ProjectsSection() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="p-2 rounded-lg glass hover:glass-2 transition-all"
+                          className="p-1.5 rounded-lg glass hover:glass-2 transition-all"
                         >
-                          <Github size={14} />
+                          <Github size={12} />
                         </a>
                       )}
                     </div>
