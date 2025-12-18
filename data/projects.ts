@@ -66,6 +66,13 @@ export const projects: Project[] = [
       appStore: 'https://apps.apple.com/us/app/hive-spelling-bee-prep-app/id6479415050',
       website: 'https://www.hivespelling.com',
     },
+    media: [
+      {
+        type: 'image',
+        url: '/projects/HiveIOSApp.png',
+        alt: 'Hive iOS App - Spelling Bee Prep App dashboard showing learning tracks and progress',
+      },
+    ],
     stats: [
       { label: 'Students', value: '600+' },
       { label: 'Lessons', value: '60+' },
@@ -109,6 +116,13 @@ export const projects: Project[] = [
     links: {
       website: 'https://www.hivespelling.com',
     },
+    media: [
+      {
+        type: 'image',
+        url: '/projects/HiveSpelling.com.png',
+        alt: 'Hive Website - Educator dashboard with student management and analytics',
+      },
+    ],
   },
   {
     id: 'hive-prepcenter',
@@ -142,6 +156,13 @@ export const projects: Project[] = [
     links: {
       website: 'https://learn.spellingbee.ae',
     },
+    media: [
+      {
+        type: 'image',
+        url: '/projects/PrepCenter.com.png',
+        alt: 'PrepCenter UAE - Official Spelling Bee Championship platform with word lists and quiz sets',
+      },
+    ],
     stats: [
       { label: 'Competitors', value: 'Hundreds' },
       { label: 'Study Modes', value: '4' },
@@ -305,6 +326,13 @@ export const projects: Project[] = [
     links: {
       website: 'https://www.marketatomy.com/bhc',
     },
+    media: [
+      {
+        type: 'image',
+        url: '/projects/marketatomy.png',
+        alt: 'MarketAtomy Business Health Check - Dashboard showing business health scores across 21 modules',
+      },
+    ],
     stats: [
       { label: 'Modules', value: '21' },
     ],
@@ -330,6 +358,13 @@ export const projects: Project[] = [
     links: {
       website: 'https://ipl-2025-beta.vercel.app',
     },
+    media: [
+      {
+        type: 'image',
+        url: '/projects/ipl.png',
+        alt: 'IPL 2025 Simulation - Cricket tournament standings and match predictions',
+      },
+    ],
   },
   {
     id: 'nextgenwellness',
@@ -351,6 +386,13 @@ export const projects: Project[] = [
     links: {
       website: 'https://next-gen-wellness.vercel.app',
     },
+    media: [
+      {
+        type: 'image',
+        url: '/projects/nextGen.png',
+        alt: 'NextGen Wellness - Health and wellness platform with fitness tracking dashboard',
+      },
+    ],
   },
   {
     id: 'gatortrips',
@@ -372,6 +414,13 @@ export const projects: Project[] = [
     links: {
       website: 'https://gator-trips.vercel.app',
     },
+    media: [
+      {
+        type: 'image',
+        url: '/projects/gatortrips.png',
+        alt: 'GatorTrips - Travel planning platform for UF students with trip booking interface',
+      },
+    ],
   },
 ];
 
