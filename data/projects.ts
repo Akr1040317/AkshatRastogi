@@ -31,55 +31,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: 'hive-app',
-    name: 'Hive iOS App',
-    tagline: 'Pattern-based spelling education platform',
-    description:
-      'iOS app delivering 60+ pattern-based lessons and quizzes on roots, patterns, and language origins, used by 600+ students and piloted with multiple school districts.',
-    category: 'featured',
-    startDate: 'Jun 2023',
-    endDate: 'Present',
-    role: 'Co-Founder & iOS Developer',
-    problem:
-      'Students struggle with spelling due to lack of understanding of word patterns, roots, and language origins. Traditional methods are rote memorization.',
-    solution:
-      'Built an iOS app that teaches spelling through pattern recognition, word roots, and etymology. Integrated Merriam-Webster API and GPT-4 for intelligent sentence generation and explanations.',
-    technicalHighlights: [
-      'Native iOS development with Swift',
-      'CloudKit for data synchronization',
-      'Merriam-Webster API integration',
-      'GPT-4 integration for adaptive learning',
-      'Pattern-based lesson system',
-      'Progress tracking and analytics',
-    ],
-    outcome:
-      '600+ active students, partnerships with multiple school districts, and 60+ comprehensive lessons delivered.',
-    technologies: [
-      'Swift',
-      'iOS',
-      'CloudKit',
-      'SwiftUI',
-      'Merriam-Webster API',
-      'GPT-4 API',
-    ],
-    links: {
-      appStore: 'https://apps.apple.com/us/app/hive-spelling-bee-prep-app/id6479415050',
-      website: 'https://www.hivespelling.com',
-    },
-    media: [
-      {
-        type: 'image',
-        url: '/projects/HiveIOSApp.png',
-        alt: 'Hive iOS App - Spelling Bee Prep App dashboard showing learning tracks and progress',
-      },
-    ],
-    stats: [
-      { label: 'Students', value: '600+' },
-      { label: 'Lessons', value: '60+' },
-      { label: 'School Districts', value: 'Multiple' },
-    ],
-  },
-  {
     id: 'hive-website',
     name: 'Hive Website & Educator Dashboard',
     tagline: 'Next.js platform for educators and students',
@@ -166,6 +117,55 @@ export const projects: Project[] = [
     stats: [
       { label: 'Competitors', value: 'Hundreds' },
       { label: 'Study Modes', value: '4' },
+    ],
+  },
+  {
+    id: 'hive-app',
+    name: 'Hive iOS App',
+    tagline: 'Pattern-based spelling education platform',
+    description:
+      'iOS app delivering 60+ pattern-based lessons and quizzes on roots, patterns, and language origins, used by 600+ students and piloted with multiple school districts.',
+    category: 'featured',
+    startDate: 'Jun 2023',
+    endDate: 'Present',
+    role: 'Co-Founder & iOS Developer',
+    problem:
+      'Students struggle with spelling due to lack of understanding of word patterns, roots, and language origins. Traditional methods are rote memorization.',
+    solution:
+      'Built an iOS app that teaches spelling through pattern recognition, word roots, and etymology. Integrated Merriam-Webster API and GPT-4 for intelligent sentence generation and explanations.',
+    technicalHighlights: [
+      'Native iOS development with Swift',
+      'CloudKit for data synchronization',
+      'Merriam-Webster API integration',
+      'GPT-4 integration for adaptive learning',
+      'Pattern-based lesson system',
+      'Progress tracking and analytics',
+    ],
+    outcome:
+      '600+ active students, partnerships with multiple school districts, and 60+ comprehensive lessons delivered.',
+    technologies: [
+      'Swift',
+      'iOS',
+      'CloudKit',
+      'SwiftUI',
+      'Merriam-Webster API',
+      'GPT-4 API',
+    ],
+    links: {
+      appStore: 'https://apps.apple.com/us/app/hive-spelling-bee-prep-app/id6479415050',
+      website: 'https://www.hivespelling.com',
+    },
+    media: [
+      {
+        type: 'image',
+        url: '/projects/HiveIOSApp.png',
+        alt: 'Hive iOS App - Spelling Bee Prep App dashboard showing learning tracks and progress',
+      },
+    ],
+    stats: [
+      { label: 'Students', value: '600+' },
+      { label: 'Lessons', value: '60+' },
+      { label: 'School Districts', value: 'Multiple' },
     ],
   },
   {
