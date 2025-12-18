@@ -246,6 +246,13 @@ export const projects: Project[] = [
     links: {
       website: 'https://getgathr.app',
     },
+    media: [
+      {
+        type: 'image',
+        url: '/projects/gathr.png',
+        alt: 'Gathr - Campus involvement app landing page showing app interface with event details',
+      },
+    ],
     stats: [
       { label: 'Students', value: '700+' },
       { label: 'Organizations', value: '60+' },
