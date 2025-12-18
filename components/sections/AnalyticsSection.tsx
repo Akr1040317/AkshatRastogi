@@ -87,70 +87,42 @@ export default function AnalyticsSection() {
   });
 
   useEffect(() => {
-    // Fetch GitHub stats
+    // Use cached/static values for instant load, then fetch real data
+    // Set initial values immediately (no loading state)
+    setGithubStats({
+      publicRepos: 19,
+      totalCommits: 243,
+      totalCommitsLastYear: 243,
+      totalLines: 8200000, // ~8.2M lines
+      totalFiles: 285,
+      loading: false,
+    });
+
+    // Optionally fetch updated stats in background (non-blocking)
     const fetchGitHubStats = async () => {
       try {
-        // Get public repos count
-        const reposResponse = await fetch('https://api.github.com/users/Akr1040317');
-        const reposData = await reposResponse.json();
-        
-        // Get list of public repos
-        const reposListResponse = await fetch('https://api.github.com/users/Akr1040317/repos?per_page=100');
-        const reposList = await reposListResponse.json();
-        
-        const publicRepos = reposData.public_repos || reposList.length || 0;
-        
-        // Try to fetch actual stats from our API route
-        let totalLines = 0;
-        let totalCommitsLastYear = 0;
-        try {
-          const statsResponse = await fetch('/api/github-stats');
-          if (statsResponse.ok) {
-            const statsData = await statsResponse.json();
-            totalLines = statsData.totalLines || 0;
-            totalCommitsLastYear = statsData.totalCommitsLastYear || 0;
-            console.log(`✅ Fetched stats from API:`);
-            console.log(`   LOC: ${totalLines.toLocaleString()} lines`);
-            console.log(`   Commits (last year): ${totalCommitsLastYear.toLocaleString()}`);
-          }
-        } catch (error) {
-          console.log('⚠️ Could not fetch from API, using estimate', error);
-        }
-        
-        // Fallback estimate if API doesn't have data yet
-        if (totalLines === 0) {
-          totalLines = publicRepos * 5000; // Rough estimate: ~5000 lines per repo
-          console.log(`📊 Using fallback estimate: ${publicRepos} repos × 5000 = ${totalLines.toLocaleString()} lines`);
-        }
-        
-        // Fallback for commits if API doesn't have data
-        if (totalCommitsLastYear === 0) {
-          totalCommitsLastYear = publicRepos * 20; // Rough estimate: ~20 commits per repo per year
-        }
-        
-        setGithubStats({
-          publicRepos,
-          totalCommits: totalCommitsLastYear, // Use last year's commits as total
-          totalCommitsLastYear,
-          totalLines,
-          totalFiles: publicRepos * 15, // Rough estimate: ~15 files per repo
-          loading: false,
+        const reposResponse = await fetch('https://api.github.com/users/Akr1040317', {
+          next: { revalidate: 3600 }, // Cache for 1 hour
         });
+        if (reposResponse.ok) {
+          const reposData = await reposResponse.json();
+          const publicRepos = reposData.public_repos || 19;
+          
+          // Only update repos count, keep other stats static for performance
+          setGithubStats(prev => ({
+            ...prev,
+            publicRepos,
+          }));
+        }
       } catch (error) {
-        console.error('Error fetching GitHub stats:', error);
-        // Fallback values
-        setGithubStats({
-          publicRepos: 20,
-          totalCommits: 1000,
-          totalCommitsLastYear: 500,
-          totalLines: 100000,
-          totalFiles: 300,
-          loading: false,
-        });
+        // Silently fail - we have fallback values
+        console.log('GitHub API fetch skipped');
       }
     };
 
-    fetchGitHubStats();
+    // Delay the fetch to not block initial render
+    const timeout = setTimeout(fetchGitHubStats, 2000);
+    return () => clearTimeout(timeout);
   }, []);
 
   // Helper function to format number with animation
