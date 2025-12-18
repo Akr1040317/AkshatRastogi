@@ -92,7 +92,7 @@ export default function ProjectsSection() {
                         project.media[0].type === 'video' ? (
                           <video
                             src={project.media[0].url}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover object-top"
                             muted
                             loop
                             playsInline
@@ -101,7 +101,7 @@ export default function ProjectsSection() {
                           <img
                             src={project.media[0].url}
                             alt={project.media[0].alt}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
                           />
                         )
                       ) : (
