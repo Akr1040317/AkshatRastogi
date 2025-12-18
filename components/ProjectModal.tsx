@@ -40,14 +40,14 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-bg-1 glass-2 border border-white/10 shadow-2xl transition-all">
+              <Dialog.Panel className="w-full max-w-6xl transform overflow-hidden rounded-2xl bg-bg-1 glass-2 border border-white/10 shadow-2xl transition-all">
                 {/* Header */}
-                <div className="glass-2 border-b border-white/10 p-6 flex items-start justify-between">
+                <div className="glass-2 border-b border-white/10 p-8 flex items-start justify-between">
                   <div className="flex-1 min-w-0 pr-4">
-                    <Dialog.Title className="text-3xl font-bold mb-2 gradient-text">
+                    <Dialog.Title className="text-4xl md:text-5xl font-bold mb-3 gradient-text">
                       {project.name}
                     </Dialog.Title>
-                    <p className="text-muted">{project.tagline}</p>
+                    <p className="text-muted text-lg">{project.tagline}</p>
                   </div>
                   <button
                     onClick={onClose}
@@ -58,7 +58,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 </div>
 
                 {/* Content */}
-                <div className="p-6 max-h-[70vh] overflow-y-auto space-y-6">
+                <div className="p-8 max-h-[80vh] overflow-y-auto space-y-8">
                   {/* Media */}
                   {project.media && project.media.length > 0 && (
                     <div className="rounded-xl overflow-hidden border border-white/10">
