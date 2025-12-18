@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Github, Play } from 'lucide-react';
+import { X, ExternalLink, Github, Play, Target, Lightbulb, Code, Trophy, Calendar, MapPin } from 'lucide-react';
 import { Project } from '@/data/projects';
 
 interface ProjectDrawerProps {
@@ -21,38 +21,65 @@ export default function ProjectDrawer({ project, isOpen, onClose }: ProjectDrawe
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90]"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md z-[90]"
             onClick={onClose}
           />
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 h-full w-full md:w-[600px] z-[91] overflow-y-auto"
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-4xl md:max-h-[90vh] z-[91] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="h-full bg-bg-1 glass-2 border-l border-white/10">
-              {/* Header */}
-              <div className="sticky top-0 glass-2 border-b border-white/10 p-6 flex items-start justify-between">
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold mb-2">{project.name}</h2>
-                  <p className="text-muted">{project.tagline}</p>
+            <div className="h-full md:h-auto bg-bg-1 glass-2 rounded-2xl border border-white/10 shadow-2xl overflow-y-auto">
+              {/* Header with Gradient */}
+              <div className="sticky top-0 glass-2 border-b border-white/10 p-6 md:p-8 backdrop-blur-xl z-10">
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <div className="flex-1">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-2 gradient-text">{project.name}</h2>
+                    <p className="text-muted text-lg">{project.tagline}</p>
+                  </div>
+                  <motion.button
+                    onClick={onClose}
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-2 rounded-xl glass hover:glass-2 transition-all flex-shrink-0"
+                  >
+                    <X size={24} />
+                  </motion.button>
                 </div>
-                <button
-                  onClick={onClose}
-                  className="p-2 rounded-lg glass hover:glass-2 transition-all"
-                >
-                  <X size={24} />
-                </button>
+                
+                {/* Project Meta */}
+                <div className="flex flex-wrap items-center gap-4 text-sm">
+                  <div className="flex items-center gap-2 text-muted">
+                    <Calendar size={16} />
+                    <span>{project.startDate} {project.endDate && `- ${project.endDate}`}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted">
+                    <Code size={16} />
+                    <span>{project.role}</span>
+                  </div>
+                  {project.category === 'featured' && (
+                    <div className="ml-auto px-3 py-1 rounded-full bg-purple/20 text-purple text-xs font-semibold">
+                      Featured Project
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Content */}
-              <div className="p-6 space-y-6">
-                {/* Media */}
+              <div className="p-6 md:p-8 space-y-8">
+                {/* Media - Hero Image */}
                 {project.media && project.media.length > 0 && (
-                  <div className="space-y-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="space-y-4"
+                  >
                     {project.media.map((media, i) => (
-                      <div key={i} className="rounded-xl overflow-hidden">
+                      <div key={i} className="rounded-2xl overflow-hidden border border-white/10 shadow-xl">
                         {media.type === 'video' ? (
                           <video
                             src={media.url}
@@ -65,108 +92,195 @@ export default function ProjectDrawer({ project, isOpen, onClose }: ProjectDrawe
                           <img
                             src={media.url}
                             alt={media.alt}
-                            className="w-full h-auto"
+                            className="w-full h-auto object-cover"
                           />
                         )}
                       </div>
                     ))}
-                  </div>
+                  </motion.div>
                 )}
 
-                {/* Stats */}
+                {/* Stats - Enhanced Cards */}
                 {project.stats && project.stats.length > 0 && (
-                  <div className="grid grid-cols-2 gap-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="grid grid-cols-2 md:grid-cols-3 gap-4"
+                  >
                     {project.stats.map((stat, i) => (
-                      <div key={i} className="glass rounded-xl p-4 text-center">
-                        <div className="text-2xl font-bold gradient-text">{stat.value}</div>
+                      <div
+                        key={i}
+                        className="glass-2 rounded-xl p-5 text-center border border-white/10 hover:border-purple/50 transition-all group"
+                      >
+                        <div className="text-3xl font-bold gradient-text mb-1 group-hover:scale-110 transition-transform">
+                          {stat.value}
+                        </div>
                         <div className="text-sm text-muted">{stat.label}</div>
                       </div>
                     ))}
-                  </div>
+                  </motion.div>
                 )}
 
-                {/* Problem */}
-                <div>
-                  <h3 className="text-xl font-bold mb-2 text-pink">Problem</h3>
-                  <p className="text-muted">{project.problem}</p>
-                </div>
+                {/* Description */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 }}
+                  className="glass-2 rounded-xl p-6 border border-white/10"
+                >
+                  <p className="text-muted leading-relaxed">{project.description}</p>
+                </motion.div>
 
-                {/* Solution */}
-                <div>
-                  <h3 className="text-xl font-bold mb-2 text-purple">Solution</h3>
-                  <p className="text-muted">{project.solution}</p>
+                {/* Problem & Solution Side by Side */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="glass-2 rounded-xl p-6 border border-pink/20"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="p-2 rounded-lg bg-pink/20">
+                        <Target size={20} className="text-pink" />
+                      </div>
+                      <h3 className="text-xl font-bold text-pink">Problem</h3>
+                    </div>
+                    <p className="text-muted leading-relaxed">{project.problem}</p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.25 }}
+                    className="glass-2 rounded-xl p-6 border border-purple/20"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="p-2 rounded-lg bg-purple/20">
+                        <Lightbulb size={20} className="text-purple" />
+                      </div>
+                      <h3 className="text-xl font-bold text-purple">Solution</h3>
+                    </div>
+                    <p className="text-muted leading-relaxed">{project.solution}</p>
+                  </motion.div>
                 </div>
 
                 {/* Technical Highlights */}
-                <div>
-                  <h3 className="text-xl font-bold mb-3 text-blue">Technical Highlights</h3>
-                  <ul className="space-y-2">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="glass-2 rounded-xl p-6 border border-blue/20"
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="p-2 rounded-lg bg-blue/20">
+                      <Code size={20} className="text-blue" />
+                    </div>
+                    <h3 className="text-xl font-bold text-blue">Technical Highlights</h3>
+                  </div>
+                  <ul className="space-y-3">
                     {project.technicalHighlights.map((highlight, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-purple mt-1">•</span>
-                        <span className="text-muted">{highlight}</span>
-                      </li>
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.35 + i * 0.05 }}
+                        className="flex items-start gap-3"
+                      >
+                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-purple flex-shrink-0" />
+                        <span className="text-muted leading-relaxed">{highlight}</span>
+                      </motion.li>
                     ))}
                   </ul>
-                </div>
+                </motion.div>
 
                 {/* Outcome */}
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Outcome</h3>
-                  <p className="text-muted">{project.outcome}</p>
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="glass-2 rounded-xl p-6 border border-orange/20"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="p-2 rounded-lg bg-orange/20">
+                      <Trophy size={20} className="text-orange" />
+                    </div>
+                    <h3 className="text-xl font-bold text-orange">Outcome</h3>
+                  </div>
+                  <p className="text-muted leading-relaxed">{project.outcome}</p>
+                </motion.div>
 
                 {/* Technologies */}
-                <div>
-                  <h3 className="text-xl font-bold mb-3">Technologies</h3>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45 }}
+                  className="glass-2 rounded-xl p-6 border border-white/10"
+                >
+                  <h3 className="text-xl font-bold mb-4">Technologies</h3>
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech, i) => (
-                      <span
+                      <motion.span
                         key={i}
-                        className="px-3 py-1 rounded-full glass text-sm"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.5 + i * 0.03 }}
+                        whileHover={{ scale: 1.05 }}
+                        className="px-4 py-2 rounded-lg glass text-sm font-medium hover:glass-2 transition-all"
                       >
                         {tech}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Links */}
-                <div className="flex gap-4 pt-4 border-t border-white/10">
+                {/* Links - Enhanced */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="flex flex-wrap gap-3 pt-6 border-t border-white/10"
+                >
                   {project.links.website && (
-                    <a
+                    <motion.a
                       href={project.links.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass hover:glass-2 transition-all"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 px-5 py-3 rounded-xl glass-2 hover:glass border border-white/10 hover:border-purple/50 transition-all group"
                     >
-                      <ExternalLink size={20} />
-                      <span>Website</span>
-                    </a>
+                      <ExternalLink size={18} className="text-purple group-hover:rotate-[-45deg] transition-transform" />
+                      <span className="font-medium">Visit Website</span>
+                    </motion.a>
                   )}
                   {project.links.github && (
-                    <a
+                    <motion.a
                       href={project.links.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass hover:glass-2 transition-all"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 px-5 py-3 rounded-xl glass-2 hover:glass border border-white/10 hover:border-purple/50 transition-all group"
                     >
-                      <Github size={20} />
-                      <span>GitHub</span>
-                    </a>
+                      <Github size={18} className="text-purple group-hover:scale-110 transition-transform" />
+                      <span className="font-medium">View Code</span>
+                    </motion.a>
                   )}
                   {project.links.appStore && (
-                    <a
+                    <motion.a
                       href={project.links.appStore}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass hover:glass-2 transition-all"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 px-5 py-3 rounded-xl glass-2 hover:glass border border-white/10 hover:border-purple/50 transition-all group"
                     >
-                      <ExternalLink size={20} />
-                      <span>App Store</span>
-                    </a>
+                      <ExternalLink size={18} className="text-purple group-hover:rotate-[-45deg] transition-transform" />
+                      <span className="font-medium">App Store</span>
+                    </motion.a>
                   )}
-                </div>
+                </motion.div>
               </div>
             </div>
           </motion.div>
@@ -175,4 +289,5 @@ export default function ProjectDrawer({ project, isOpen, onClose }: ProjectDrawe
     </AnimatePresence>
   );
 }
+
 
