@@ -87,42 +87,50 @@ export default function AnalyticsSection() {
   });
 
   useEffect(() => {
-    // Use cached/static values for instant load, then fetch real data
-    // Set initial values immediately (no loading state)
+    // Set initial values immediately for fast render, then update with real data
     setGithubStats({
       publicRepos: 19,
       totalCommits: 243,
       totalCommitsLastYear: 243,
-      totalLines: 8200000, // ~8.2M lines
+      totalLines: 10700000, // ~10.7M lines
       totalFiles: 285,
       loading: false,
     });
 
-    // Optionally fetch updated stats in background (non-blocking)
+    // Fetch real-time stats from GitHub API (non-blocking)
     const fetchGitHubStats = async () => {
       try {
-        const reposResponse = await fetch('https://api.github.com/users/Akr1040317', {
-          next: { revalidate: 3600 }, // Cache for 1 hour
-        });
-        if (reposResponse.ok) {
-          const reposData = await reposResponse.json();
-          const publicRepos = reposData.public_repos || 19;
-          
-          // Only update repos count, keep other stats static for performance
-          setGithubStats(prev => ({
-            ...prev,
-            publicRepos,
-          }));
+        // Fetch user profile for repo count
+        const userResponse = await fetch('https://api.github.com/users/Akr1040317');
+        if (!userResponse.ok) return;
+        const userData = await userResponse.json();
+        
+        // Fetch repos to calculate lines
+        const reposResponse = await fetch('https://api.github.com/users/Akr1040317/repos?per_page=100&sort=updated');
+        if (!reposResponse.ok) return;
+        const repos = await reposResponse.json();
+        
+        // Calculate total lines from repo sizes (size is in KB, ~75 lines per KB)
+        const publicRepos = repos.filter((r: any) => !r.fork);
+        let totalLines = 0;
+        for (const repo of publicRepos) {
+          totalLines += (repo.size || 0) * 75;
         }
+        
+        // Update with real data
+        setGithubStats(prev => ({
+          ...prev,
+          publicRepos: userData.public_repos || prev.publicRepos,
+          totalLines: totalLines > 0 ? totalLines : prev.totalLines,
+        }));
       } catch (error) {
         // Silently fail - we have fallback values
-        console.log('GitHub API fetch skipped');
+        console.log('GitHub API fetch completed with fallback');
       }
     };
 
-    // Delay the fetch to not block initial render
-    const timeout = setTimeout(fetchGitHubStats, 2000);
-    return () => clearTimeout(timeout);
+    // Fetch after initial render (non-blocking)
+    fetchGitHubStats();
   }, []);
 
   // Helper function to format number with animation
