@@ -1,200 +1,227 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Github, Play, Target, Lightbulb, Code, Trophy, Calendar, MapPin } from 'lucide-react';
+import { X, ExternalLink, Github, Calendar, MapPin, Briefcase } from 'lucide-react';
 import { Project } from '@/data/projects';
 
-interface ProjectDrawerProps {
+interface ProjectModalProps {
   project: Project | null;
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function ProjectDrawer({ project, isOpen, onClose }: ProjectDrawerProps) {
+export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
   if (!project) return null;
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-md z-[90]"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md z-[100]"
             onClick={onClose}
           />
+
+          {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] max-w-3xl max-h-[85vh] z-[91] flex flex-col"
+            className="fixed inset-4 md:inset-8 lg:inset-16 z-[101] flex items-center justify-center pointer-events-none"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-bg-1 glass-2 rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden">
+            <div className="w-full h-full max-w-6xl max-h-[90vh] bg-bg-1 glass-2 rounded-2xl border border-white/10 overflow-hidden flex flex-col pointer-events-auto shadow-2xl">
               {/* Header */}
-              <div className="flex-shrink-0 glass-2 border-b border-white/10 p-4 md:p-6">
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-2xl md:text-3xl font-bold mb-1 gradient-text truncate">{project.name}</h2>
-                    <p className="text-muted text-sm md:text-base truncate">{project.tagline}</p>
-                  </div>
-                  <motion.button
-                    onClick={onClose}
-                    whileHover={{ scale: 1.1, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="p-2 rounded-lg glass hover:glass-2 transition-all flex-shrink-0"
-                  >
-                    <X size={20} />
-                  </motion.button>
-                </div>
-                
-                {/* Project Meta */}
-                <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm">
-                  <div className="flex items-center gap-1.5 text-muted">
-                    <Calendar size={14} />
-                    <span>{project.startDate} {project.endDate && `- ${project.endDate}`}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-muted">
-                    <Code size={14} />
-                    <span className="truncate max-w-[200px]">{project.role}</span>
-                  </div>
-                  {project.category === 'featured' && (
-                    <div className="ml-auto px-2 py-1 rounded-full bg-purple/20 text-purple text-xs font-semibold">
-                      Featured
+              <div className="flex-shrink-0 glass-2 border-b border-white/10 p-6 flex items-start justify-between">
+                <div className="flex-1 pr-4">
+                  <h2 className="text-4xl md:text-5xl font-bold mb-2 gradient-text">{project.name}</h2>
+                  <p className="text-xl text-muted mb-4">{project.tagline}</p>
+                  <div className="flex flex-wrap gap-4 text-sm text-muted">
+                    <div className="flex items-center gap-2">
+                      <Briefcase size={16} />
+                      <span>{project.role}</span>
                     </div>
-                  )}
+                    <div className="flex items-center gap-2">
+                      <Calendar size={16} />
+                      <span>{project.startDate} {project.endDate && `- ${project.endDate}`}</span>
+                    </div>
+                  </div>
                 </div>
+                <button
+                  onClick={onClose}
+                  className="p-3 rounded-xl glass hover:glass-2 transition-all flex-shrink-0"
+                  aria-label="Close modal"
+                >
+                  <X size={24} />
+                </button>
               </div>
 
               {/* Scrollable Content */}
-              <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-5">
+              <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8">
                 {/* Media */}
                 {project.media && project.media.length > 0 && (
-                  <div className="rounded-xl overflow-hidden border border-white/10">
+                  <div className="space-y-4">
                     {project.media.map((media, i) => (
-                      <div key={i}>
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        className="rounded-xl overflow-hidden border border-white/10"
+                      >
                         {media.type === 'video' ? (
-                          <video src={media.url} controls className="w-full" />
+                          <video
+                            src={media.url}
+                            controls
+                            className="w-full"
+                            autoPlay
+                            loop
+                          />
                         ) : (
-                          <img src={media.url} alt={media.alt} className="w-full h-auto" />
+                          <img
+                            src={media.url}
+                            alt={media.alt}
+                            className="w-full h-auto object-contain"
+                          />
                         )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Stats */}
-                {project.stats && project.stats.length > 0 && (
-                  <div className="grid grid-cols-3 gap-3">
-                    {project.stats.map((stat, i) => (
-                      <div key={i} className="glass rounded-lg p-3 text-center border border-white/10">
-                        <div className="text-xl md:text-2xl font-bold gradient-text">{stat.value}</div>
-                        <div className="text-xs text-muted mt-1">{stat.label}</div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 )}
 
                 {/* Description */}
                 <div>
-                  <p className="text-muted text-sm leading-relaxed">{project.description}</p>
+                  <h3 className="text-2xl font-bold mb-3">About</h3>
+                  <p className="text-muted text-lg leading-relaxed">{project.description}</p>
                 </div>
 
-                {/* Problem & Solution */}
-                <div className="space-y-4">
-                  <div className="glass rounded-lg p-4 border border-pink/20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Target size={16} className="text-pink" />
-                      <h3 className="text-base font-bold text-pink">Problem</h3>
-                    </div>
-                    <p className="text-muted text-sm leading-relaxed">{project.problem}</p>
+                {/* Stats */}
+                {project.stats && project.stats.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {project.stats.map((stat, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.2 + i * 0.05 }}
+                        className="glass rounded-xl p-6 text-center"
+                      >
+                        <div className="text-3xl font-bold gradient-text mb-2">{stat.value}</div>
+                        <div className="text-sm text-muted">{stat.label}</div>
+                      </motion.div>
+                    ))}
                   </div>
+                )}
 
-                  <div className="glass rounded-lg p-4 border border-purple/20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Lightbulb size={16} className="text-purple" />
-                      <h3 className="text-base font-bold text-purple">Solution</h3>
-                    </div>
-                    <p className="text-muted text-sm leading-relaxed">{project.solution}</p>
+                {/* Problem & Solution Grid */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3 text-pink flex items-center gap-2">
+                      <span className="w-1 h-6 bg-pink rounded-full" />
+                      Problem
+                    </h3>
+                    <p className="text-muted leading-relaxed">{project.problem}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3 text-purple flex items-center gap-2">
+                      <span className="w-1 h-6 bg-purple rounded-full" />
+                      Solution
+                    </h3>
+                    <p className="text-muted leading-relaxed">{project.solution}</p>
                   </div>
                 </div>
 
                 {/* Technical Highlights */}
-                <div className="glass rounded-lg p-4 border border-blue/20">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Code size={16} className="text-blue" />
-                    <h3 className="text-base font-bold text-blue">Technical Highlights</h3>
-                  </div>
-                  <ul className="space-y-2">
+                <div>
+                  <h3 className="text-2xl font-bold mb-4 text-blue flex items-center gap-2">
+                    <span className="w-1 h-6 bg-blue rounded-full" />
+                    Technical Highlights
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-3">
                     {project.technicalHighlights.map((highlight, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-muted">
-                        <span className="text-purple mt-1">•</span>
-                        <span>{highlight}</span>
-                      </li>
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 + i * 0.05 }}
+                        className="flex items-start gap-3 glass rounded-lg p-4"
+                      >
+                        <span className="text-purple mt-1 flex-shrink-0">•</span>
+                        <span className="text-muted">{highlight}</span>
+                      </motion.div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
 
                 {/* Outcome */}
-                <div className="glass rounded-lg p-4 border border-orange/20">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Trophy size={16} className="text-orange" />
-                    <h3 className="text-base font-bold text-orange">Outcome</h3>
-                  </div>
-                  <p className="text-muted text-sm leading-relaxed">{project.outcome}</p>
+                <div>
+                  <h3 className="text-2xl font-bold mb-3">Outcome</h3>
+                  <p className="text-muted text-lg leading-relaxed">{project.outcome}</p>
                 </div>
 
                 {/* Technologies */}
-                <div className="glass rounded-lg p-4 border border-white/10">
-                  <h3 className="text-base font-bold mb-3">Technologies</h3>
-                  <div className="flex flex-wrap gap-2">
+                <div>
+                  <h3 className="text-2xl font-bold mb-4">Technologies</h3>
+                  <div className="flex flex-wrap gap-3">
                     {project.technologies.map((tech, i) => (
-                      <span
+                      <motion.span
                         key={i}
-                        className="px-3 py-1 rounded-lg glass text-xs font-medium"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.4 + i * 0.03 }}
+                        className="px-4 py-2 rounded-full glass text-sm font-medium hover:glass-2 transition-all"
                       >
                         {tech}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </div>
 
                 {/* Links */}
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
+                <div className="flex flex-wrap gap-4 pt-6 border-t border-white/10">
                   {project.links.website && (
-                    <a
+                    <motion.a
                       href={project.links.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass hover:glass-2 transition-all text-sm"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl glass hover:glass-2 transition-all font-medium"
                     >
-                      <ExternalLink size={16} className="text-purple" />
-                      <span>Website</span>
-                    </a>
+                      <ExternalLink size={20} />
+                      <span>Visit Website</span>
+                    </motion.a>
                   )}
                   {project.links.github && (
-                    <a
+                    <motion.a
                       href={project.links.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass hover:glass-2 transition-all text-sm"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl glass hover:glass-2 transition-all font-medium"
                     >
-                      <Github size={16} className="text-purple" />
-                      <span>GitHub</span>
-                    </a>
+                      <Github size={20} />
+                      <span>View on GitHub</span>
+                    </motion.a>
                   )}
                   {project.links.appStore && (
-                    <a
+                    <motion.a
                       href={project.links.appStore}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass hover:glass-2 transition-all text-sm"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl glass hover:glass-2 transition-all font-medium"
                     >
-                      <ExternalLink size={16} className="text-purple" />
-                      <span>App Store</span>
-                    </a>
+                      <ExternalLink size={20} />
+                      <span>Download on App Store</span>
+                    </motion.a>
                   )}
                 </div>
               </div>

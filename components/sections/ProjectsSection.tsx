@@ -3,45 +3,9 @@
 import { useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ExternalLink, Github, Sparkles } from 'lucide-react';
+import { ExternalLink, Github, Play, Sparkles } from 'lucide-react';
 import { projects, Project } from '@/data/projects';
-import ProjectModal from '@/components/ProjectModal';
-
-// Truly randomized abstract layout - each card gets completely unique dimensions
-const getCardLayout = (index: number, projectId: string) => {
-  // Create unique hash from project ID
-  const hash = projectId.split('').reduce((acc, char, i) => acc + char.charCodeAt(0) * (i + 1), 0);
-  const seed1 = (index * 17 + hash * 11) % 1000;
-  const seed2 = (index * 23 + hash * 13) % 1000;
-  
-  // First couple of cards are larger
-  let baseWidth: number;
-  if (index < 2) {
-    // First 2 cards: 550px to 750px (larger)
-    baseWidth = 550 + (seed1 % 201); // 550-750px
-  } else {
-    // Rest of cards: 400px to 650px
-    baseWidth = 400 + (seed1 % 251); // 400-650px
-  }
-  
-  // Generate unique aspect ratio (0.7 to 2.2) - narrower range to prevent too tall/short cards
-  const aspectRatio = 0.7 + (seed2 % 151) / 100; // 0.7 to 2.2 with many variations
-  
-  // Calculate height from width and aspect ratio
-  let height = baseWidth / aspectRatio;
-  
-  // Ensure minimum height to prevent text cutoff (at least 400px for content)
-  const minHeight = 400;
-  if (height < minHeight) {
-    height = minHeight;
-  }
-  
-  return {
-    width: `${baseWidth}px`,
-    height: `${height}px`,
-    aspectRatio: `${aspectRatio}`,
-  };
-};
+import ProjectModal from '@/components/ProjectDrawer';
 
 export default function ProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -54,75 +18,76 @@ export default function ProjectsSection() {
   const filteredProjects = filter === 'all' ? projects : filter === 'featured' ? featuredProjects : labProjects;
 
   return (
-    <section id="projects" ref={ref} className="min-h-screen flex flex-col justify-center px-4 md:px-8 py-20 relative">
-      <div className="max-w-7xl mx-auto w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <Sparkles className="text-purple" size={32} />
-            <h2 className="text-5xl md:text-6xl font-bold">
-              <span className="gradient-text">Projects</span>
-            </h2>
-            <Sparkles className="text-pink" size={32} />
-          </div>
-          <p className="text-xl text-muted">Things I've built and shipped</p>
-        </motion.div>
+    <>
+      <section id="projects" ref={ref} className="min-h-screen flex flex-col justify-center px-4 md:px-8 py-20 relative">
+        <div className="max-w-7xl mx-auto w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <Sparkles className="text-purple" size={32} />
+              <h2 className="text-5xl md:text-6xl font-bold">
+                <span className="gradient-text">Projects</span>
+              </h2>
+              <Sparkles className="text-pink" size={32} />
+            </div>
+            <p className="text-xl text-muted">Things I've built and shipped</p>
+          </motion.div>
 
-        {/* Filter Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex justify-center gap-3 mb-12"
-        >
-          {(['all', 'featured', 'lab'] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-6 py-3 rounded-full transition-all font-medium ${
-                filter === f
-                  ? 'glass-2 text-white'
-                  : 'glass text-muted hover:text-white'
-              }`}
-            >
-              {f.charAt(0).toUpperCase() + f.slice(1)}
-              <span className="ml-2 text-xs opacity-70">
-                ({f === 'all' ? projects.length : f === 'featured' ? featuredProjects.length : labProjects.length})
-              </span>
-            </button>
-          ))}
-        </motion.div>
+          {/* Filter Tabs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex justify-center gap-3 mb-12"
+          >
+            {(['all', 'featured', 'lab'] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-6 py-3 rounded-full transition-all font-medium ${
+                  filter === f
+                    ? 'glass-2 text-white'
+                    : 'glass text-muted hover:text-white'
+                }`}
+              >
+                {f.charAt(0).toUpperCase() + f.slice(1)}
+                <span className="ml-2 text-xs opacity-70">
+                  ({f === 'all' ? projects.length : f === 'featured' ? featuredProjects.length : labProjects.length})
+                </span>
+              </button>
+            ))}
+          </motion.div>
 
-        {/* Projects Collage - Truly Randomized Abstract Layout */}
-        <div className="relative w-full">
-          <div className="flex flex-wrap gap-4 md:gap-6 justify-start items-start content-start">
+          {/* Projects Grid - Creative Layout */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProjects.map((project, index) => {
-              const layout = getCardLayout(index, project.id);
+              const isLarge = index % 7 === 0; // Every 7th project is large
               return (
                 <motion.div
                   key={project.id}
-                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                  animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                  transition={{ duration: 0.6, delay: index * 0.08 }}
-                  className="group cursor-pointer flex-shrink-0"
-                  style={{
-                    width: layout.width,
-                    height: layout.height,
-                    minWidth: index < 2 ? '550px' : '400px',
-                    maxWidth: '100%',
+                  initial={{ opacity: 0, y: 60, scale: 0.9, rotateX: -30 }}
+                  animate={isInView ? { opacity: 1, y: 0, scale: 1, rotateX: 0 } : {}}
+                  transition={{ 
+                    duration: 0.7, 
+                    delay: index * 0.08,
+                    type: 'spring',
+                    stiffness: 120,
+                    damping: 12,
                   }}
+                  whileHover={{ y: -8, rotateX: 5 }}
+                  className={`group cursor-pointer ${isLarge ? 'md:col-span-2 lg:col-span-2' : ''}`}
                   onClick={() => setSelectedProject(project)}
                 >
-                  <div className="glass-2 rounded-2xl overflow-hidden w-full h-full border border-white/10 hover:border-purple/30 transition-all relative flex flex-col min-h-[400px]">
+                  <div className="glass-2 rounded-2xl overflow-hidden h-full hover:glass transition-all relative">
                     {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-pink/10 via-purple/10 to-blue/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-pink/10 via-purple/10 to-blue/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
                     
-                    {/* Project Media */}
-                    <div className="relative w-full flex-shrink-0 bg-gradient-to-br from-pink/20 via-purple/20 to-blue/20 overflow-hidden" style={{ minHeight: '200px', height: '50%' }}>
+                    {/* Project Media/Placeholder */}
+                    <div className={`relative ${isLarge ? 'h-64' : 'h-48'} bg-gradient-to-br from-pink/20 via-purple/20 to-blue/20 overflow-hidden`}>
                       {project.media && project.media.length > 0 ? (
                         project.media[0].type === 'video' ? (
                           <video
@@ -156,15 +121,14 @@ export default function ProjectsSection() {
                       )}
                     </div>
 
-                    {/* Card Content - Always Visible */}
-                    <div className="flex-1 flex flex-col p-4 relative z-10 bg-bg-1">
-                      <h3 className="text-lg md:text-xl font-bold mb-2 group-hover:text-purple transition-colors">
+                    <div className="p-6 relative z-10">
+                      <h3 className="text-2xl font-bold mb-2 group-hover:text-purple transition-colors">
                         {project.name}
                       </h3>
-                      <p className="text-muted text-xs mb-3 line-clamp-2 flex-shrink-0">{project.tagline}</p>
+                      <p className="text-muted text-sm mb-4 line-clamp-2">{project.tagline}</p>
                       
                       {/* Tech Stack Pills */}
-                      <div className="flex flex-wrap gap-1.5 mb-3 flex-shrink-0">
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {project.technologies.slice(0, 3).map((tech, i) => (
                           <span
                             key={i}
@@ -181,62 +145,60 @@ export default function ProjectsSection() {
                       </div>
 
                       {/* Stats or Description */}
-                      <div className="flex-1 flex flex-col justify-end">
-                        {project.stats && project.stats.length > 0 ? (
-                          <div className="flex gap-3 text-xs mb-3">
-                            {project.stats.slice(0, 2).map((stat, i) => (
-                              <div key={i} className="flex items-center gap-1">
-                                <span className="text-purple font-bold">{stat.value}</span>
-                                <span className="text-muted">{stat.label}</span>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="text-xs text-muted line-clamp-2 mb-3">{project.description}</p>
-                        )}
-
-                        {/* Links */}
-                        <div className="flex gap-2 pt-3 border-t border-white/10">
-                          {project.links.website && (
-                            <a
-                              href={project.links.website}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="p-2 rounded-lg glass hover:glass-2 transition-all"
-                            >
-                              <ExternalLink size={14} />
-                            </a>
-                          )}
-                          {project.links.github && (
-                            <a
-                              href={project.links.github}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="p-2 rounded-lg glass hover:glass-2 transition-all"
-                            >
-                              <Github size={14} />
-                            </a>
-                          )}
+                      {project.stats && project.stats.length > 0 ? (
+                        <div className="flex gap-4 text-sm">
+                          {project.stats.slice(0, 2).map((stat, i) => (
+                            <div key={i} className="flex items-center gap-1">
+                              <span className="text-purple font-bold">{stat.value}</span>
+                              <span className="text-muted">{stat.label}</span>
+                            </div>
+                          ))}
                         </div>
+                      ) : (
+                        <p className="text-sm text-muted line-clamp-2">{project.description}</p>
+                      )}
+
+                      {/* Links */}
+                      <div className="flex gap-2 mt-4 pt-4 border-t border-white/10">
+                        {project.links.website && (
+                          <a
+                            href={project.links.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="p-2 rounded-lg glass hover:glass-2 transition-all"
+                          >
+                            <ExternalLink size={16} />
+                          </a>
+                        )}
+                        {project.links.github && (
+                          <a
+                            href={project.links.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="p-2 rounded-lg glass hover:glass-2 transition-all"
+                          >
+                            <Github size={16} />
+                          </a>
+                        )}
                       </div>
                     </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
+      </section>
 
-        {/* Project Modal */}
-        <ProjectModal
-          project={selectedProject}
-          isOpen={!!selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      </div>
-    </section>
+      {/* Project Modal */}
+      <ProjectModal
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
+    </>
   );
 }
 
