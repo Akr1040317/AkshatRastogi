@@ -250,7 +250,7 @@ export const projects: Project[] = [
       {
         type: 'image',
         url: '/projects/gathr.png',
-        alt: 'Gathr - Campus involvement app landing page showing app interface with event details',
+        alt: 'Gathr - Campus involvement app landing page showing event details and campus community features',
       },
     ],
     stats: [
