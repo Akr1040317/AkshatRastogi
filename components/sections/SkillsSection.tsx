@@ -27,15 +27,6 @@ export default function SkillsSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {skills.map((category, categoryIndex) => {
-            // Different colors for different categories
-            const categoryColors: Record<string, { text: string; accent: string }> = {
-              'Languages': { text: 'text-yellow-400', accent: 'bg-yellow-400' },
-              'Frameworks': { text: 'text-blue-400', accent: 'bg-blue-400' },
-              'Developer Tools': { text: 'text-green-400', accent: 'bg-green-400' },
-              'Libraries': { text: 'text-purple-400', accent: 'bg-purple-400' },
-            };
-            const colors = categoryColors[category.category] || { text: 'text-purple-400', accent: 'bg-purple-400' };
-            
             return (
             <motion.div
               key={category.category}
@@ -49,8 +40,8 @@ export default function SkillsSection() {
               }}
               className="glass-2 rounded-2xl p-6"
             >
-              <h3 className={`text-xl font-bold mb-6 ${colors.text} flex items-center gap-2`}>
-                <span className={`w-1 h-6 ${colors.accent} rounded-full`} />
+              <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
+                <span className="text-white/80">|</span>
                 {category.category}
               </h3>
               <div className="flex flex-wrap gap-3">
