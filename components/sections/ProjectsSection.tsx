@@ -1,21 +1,73 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ExternalLink, Github, Play, Sparkles } from 'lucide-react';
+import { ExternalLink, Github, Sparkles, X, Filter, Search } from 'lucide-react';
 import { projects, Project } from '@/data/projects';
 import ProjectModal from '@/components/ProjectDrawer';
 
 export default function ProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [filter, setFilter] = useState<'all' | 'featured' | 'lab'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | 'featured' | 'lab'>('all');
+  const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-  const featuredProjects = projects.filter((p) => p.category === 'featured');
-  const labProjects = projects.filter((p) => p.category === 'lab');
-  const filteredProjects = filter === 'all' ? projects : filter === 'featured' ? featuredProjects : labProjects;
+  // Extract all unique technologies
+  const allTechnologies = useMemo(() => {
+    const techSet = new Set<string>();
+    projects.forEach(project => {
+      project.technologies.forEach(tech => techSet.add(tech));
+    });
+    return Array.from(techSet).sort();
+  }, []);
+
+  // Filter projects
+  const filteredProjects = useMemo(() => {
+    let filtered = projects;
+
+    // Category filter
+    if (categoryFilter !== 'all') {
+      filtered = filtered.filter(p => p.category === categoryFilter);
+    }
+
+    // Technology filter
+    if (selectedTechs.length > 0) {
+      filtered = filtered.filter(p =>
+        selectedTechs.some(tech => p.technologies.includes(tech))
+      );
+    }
+
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(p =>
+        p.name.toLowerCase().includes(query) ||
+        p.tagline.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query) ||
+        p.technologies.some(t => t.toLowerCase().includes(query))
+      );
+    }
+
+    return filtered;
+  }, [categoryFilter, selectedTechs, searchQuery]);
+
+  const toggleTech = (tech: string) => {
+    setSelectedTechs(prev =>
+      prev.includes(tech) ? prev.filter(t => t !== tech) : [...prev, tech]
+    );
+  };
+
+  const clearFilters = () => {
+    setCategoryFilter('all');
+    setSelectedTechs([]);
+    setSearchQuery('');
+  };
+
+  const hasActiveFilters = categoryFilter !== 'all' || selectedTechs.length > 0 || searchQuery.trim() !== '';
 
   return (
     <>
@@ -37,34 +89,156 @@ export default function ProjectsSection() {
             <p className="text-xl text-muted">Things I've built and shipped</p>
           </motion.div>
 
-          {/* Filter Tabs */}
+          {/* Search Bar */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex justify-center gap-3 mb-12"
+            className="mb-6"
           >
-            {(['all', 'featured', 'lab'] as const).map((f) => (
-              <button
-                key={f}
-                onClick={() => setFilter(f)}
-                className={`px-6 py-3 rounded-full transition-all font-medium ${
-                  filter === f
-                    ? 'glass-2 text-white'
-                    : 'glass text-muted hover:text-white'
-                }`}
-              >
-                {f.charAt(0).toUpperCase() + f.slice(1)}
-                <span className="ml-2 text-xs opacity-70">
-                  ({f === 'all' ? projects.length : f === 'featured' ? featuredProjects.length : labProjects.length})
-                </span>
-              </button>
-            ))}
+            <div className="relative max-w-2xl mx-auto">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted" size={20} />
+              <input
+                type="text"
+                placeholder="Search projects by name, description, or technology..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 rounded-full glass-2 text-white placeholder-muted focus:outline-none focus:ring-2 focus:ring-purple/50 transition-all"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted hover:text-white transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              )}
+            </div>
           </motion.div>
 
+          {/* Filter Controls */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mb-8"
+          >
+            <div className="flex flex-col gap-4">
+              {/* Category and Filter Toggle */}
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                {(['all', 'featured', 'lab'] as const).map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setCategoryFilter(f)}
+                    className={`px-6 py-2 rounded-full transition-all font-medium ${
+                      categoryFilter === f
+                        ? 'glass-2 text-white'
+                        : 'glass text-muted hover:text-white'
+                    }`}
+                  >
+                    {f.charAt(0).toUpperCase() + f.slice(1)}
+                    <span className="ml-2 text-xs opacity-70">
+                      ({f === 'all' ? projects.length : f === 'featured' ? projects.filter(p => p.category === 'featured').length : projects.filter(p => p.category === 'lab').length})
+                    </span>
+                  </button>
+                ))}
+                
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`px-4 py-2 rounded-full transition-all font-medium flex items-center gap-2 ${
+                    showFilters || hasActiveFilters
+                      ? 'glass-2 text-white'
+                      : 'glass text-muted hover:text-white'
+                  }`}
+                >
+                  <Filter size={16} />
+                  Filters
+                  {hasActiveFilters && (
+                    <span className="px-2 py-0.5 rounded-full bg-purple/30 text-xs">
+                      {selectedTechs.length + (searchQuery ? 1 : 0)}
+                    </span>
+                  )}
+                </button>
+
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="px-4 py-2 rounded-full glass text-muted hover:text-white transition-all font-medium flex items-center gap-2"
+                  >
+                    <X size={16} />
+                    Clear All
+                  </button>
+                )}
+              </div>
+
+              {/* Technology Filter Chips */}
+              {showFilters && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="glass-2 rounded-2xl p-6"
+                >
+                  <h3 className="text-sm font-semibold text-muted mb-4 flex items-center gap-2">
+                    <Filter size={16} />
+                    Filter by Technology / Language
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {allTechnologies.map((tech) => {
+                      const isSelected = selectedTechs.includes(tech);
+                      return (
+                        <button
+                          key={tech}
+                          onClick={() => toggleTech(tech)}
+                          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                            isSelected
+                              ? 'glass-2 text-white bg-purple/30 border border-purple/50'
+                              : 'glass text-muted hover:text-white hover:glass-2'
+                          }`}
+                        >
+                          {tech}
+                          {isSelected && (
+                            <X size={14} className="inline-block ml-2" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Results Count */}
+          {hasActiveFilters && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center mb-6 text-muted"
+            >
+              Showing {filteredProjects.length} of {projects.length} projects
+            </motion.div>
+          )}
+
           {/* Projects Grid - Creative Layout */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((project, index) => {
+          {filteredProjects.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-20"
+            >
+              <p className="text-xl text-muted mb-4">No projects found matching your filters.</p>
+              <button
+                onClick={clearFilters}
+                className="px-6 py-3 rounded-full glass-2 text-white hover:glass transition-all"
+              >
+                Clear Filters
+              </button>
+            </motion.div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProjects.map((project, index) => {
               const isLarge = index % 7 === 0; // Every 7th project is large
               return (
                 <motion.div
@@ -188,7 +362,8 @@ export default function ProjectsSection() {
                 </motion.div>
               );
             })}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 
