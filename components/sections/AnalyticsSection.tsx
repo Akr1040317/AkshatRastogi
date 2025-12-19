@@ -199,7 +199,7 @@ export default function AnalyticsSection() {
           className="text-center mb-16"
         >
           <h2 className="text-5xl md:text-6xl font-bold mb-4">
-            <span className="gradient-text">By The Numbers</span>
+            <span className="gradient-text">By the Numbers</span>
           </h2>
           <p className="text-xl text-muted">Impact & achievements</p>
         </motion.div>
