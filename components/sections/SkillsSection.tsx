@@ -41,7 +41,7 @@ export default function SkillsSection() {
               className="glass-2 rounded-2xl p-6"
             >
               <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
-                <span className="text-white/80">|</span>
+                <span className="w-1 h-6 bg-white rounded-full" />
                 {category.category}
               </h3>
               <div className="flex flex-wrap gap-3">
