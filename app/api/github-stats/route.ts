@@ -20,22 +20,44 @@ function estimateLinesFromSize(sizeKB: number): number {
 
 export async function GET() {
   try {
-    // Fetch all public repositories
-    const reposResponse = await fetch('https://api.github.com/users/Akr1040317/repos?per_page=100&sort=updated', {
-      next: { revalidate: 3600 },
-      headers: {
-        'Accept': 'application/vnd.github.v3+json',
-      },
-    });
+    // Fetch all public repositories with pagination
+    let allRepos: any[] = [];
+    let page = 1;
+    let hasMore = true;
     
-    if (!reposResponse.ok) {
-      throw new Error(`GitHub API error: ${reposResponse.status}`);
+    while (hasMore) {
+      const reposResponse = await fetch(
+        `https://api.github.com/users/Akr1040317/repos?per_page=100&page=${page}&sort=updated`,
+        {
+          next: { revalidate: 3600 },
+          headers: {
+            'Accept': 'application/vnd.github.v3+json',
+          },
+        }
+      );
+      
+      if (!reposResponse.ok) {
+        throw new Error(`GitHub API error: ${reposResponse.status}`);
+      }
+      
+      const repos: any[] = await reposResponse.json();
+      
+      if (repos.length === 0) {
+        hasMore = false;
+      } else {
+        allRepos = allRepos.concat(repos);
+        // Check if there are more pages by checking the Link header
+        const linkHeader = reposResponse.headers.get('link');
+        if (linkHeader && linkHeader.includes('rel="next"')) {
+          page++;
+        } else {
+          hasMore = false;
+        }
+      }
     }
     
-    const repos: any[] = await reposResponse.json();
-    
-    // Filter out forks and calculate total size
-    const publicRepos = repos.filter((repo: any) => !repo.fork);
+    // Filter out forks for accurate count of original repos
+    const publicRepos = allRepos.filter((repo: any) => !repo.fork);
     
     // Calculate total lines based on repository sizes
     let totalLines = 0;
