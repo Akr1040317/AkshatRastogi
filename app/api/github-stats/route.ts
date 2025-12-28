@@ -56,14 +56,16 @@ export async function GET() {
       }
     }
     
-    // Filter out forks for accurate count of original repos
-    const publicRepos = allRepos.filter((repo: any) => !repo.fork);
+    // Include all repos (including forks) for total count
+    // Filter out forks only for lines of code calculation (original work)
+    const publicRepos = allRepos;
+    const nonForkRepos = allRepos.filter((repo: any) => !repo.fork);
     
-    // Calculate total lines based on repository sizes
+    // Calculate total lines based on repository sizes (only count non-fork repos for lines)
     let totalLines = 0;
     const repoDetails: Array<{ name: string; sizeKB: number; estimatedLines: number }> = [];
     
-    for (const repo of publicRepos) {
+    for (const repo of nonForkRepos) {
       // Repository size is in KB
       const repoSizeKB = repo.size || 0;
       const estimatedLines = estimateLinesFromSize(repoSizeKB);
@@ -90,7 +92,7 @@ export async function GET() {
     console.log(`📊 Calculating commits in 2025 (since ${sinceDate})...`);
     
     // Fetch commits from each repo (limit to avoid rate limits)
-    for (const repo of publicRepos.slice(0, 50)) { // Limit to 50 repos to avoid rate limits
+    for (const repo of nonForkRepos.slice(0, 50)) { // Limit to 50 repos to avoid rate limits
       try {
         // Fetch commits with author filter and date filter
         const commitsResponse = await fetch(
@@ -143,7 +145,8 @@ export async function GET() {
     
     // Log calculation details
     console.log(`📊 GitHub Stats Calculation:`);
-    console.log(`   Total public repos: ${publicRepos.length}`);
+    console.log(`   Total repos (including forks): ${publicRepos.length}`);
+    console.log(`   Non-fork repos: ${nonForkRepos.length}`);
     console.log(`   Total estimated lines: ${totalLines.toLocaleString()}`);
     console.log(`   Total commits (2025): ${Math.round(totalCommitsLastYear).toLocaleString()}`);
     console.log(`   Top 5 repos by size:`);
