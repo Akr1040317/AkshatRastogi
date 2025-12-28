@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Revalidate every hour
 
 interface GitHubStats {
+  publicRepos: number;
   totalLines: number;
   totalCommitsLastYear: number;
   lastUpdated: string;
@@ -58,15 +59,13 @@ export async function GET() {
     // Sort repos by size for logging
     repoDetails.sort((a, b) => b.estimatedLines - a.estimatedLines);
     
-    // Calculate commits in the last year
-    const oneYearAgo = new Date();
-    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-    const sinceDate = oneYearAgo.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    // Calculate commits in 2025 (from January 1, 2025 to now)
+    const sinceDate = '2025-01-01'; // Format: YYYY-MM-DD
     
     let totalCommitsLastYear = 0;
     const commitDetails: Array<{ name: string; commits: number }> = [];
     
-    console.log(`📊 Calculating commits since ${sinceDate}...`);
+    console.log(`📊 Calculating commits in 2025 (since ${sinceDate})...`);
     
     // Fetch commits from each repo (limit to avoid rate limits)
     for (const repo of publicRepos.slice(0, 50)) { // Limit to 50 repos to avoid rate limits
@@ -124,7 +123,7 @@ export async function GET() {
     console.log(`📊 GitHub Stats Calculation:`);
     console.log(`   Total public repos: ${publicRepos.length}`);
     console.log(`   Total estimated lines: ${totalLines.toLocaleString()}`);
-    console.log(`   Total commits (last year): ${Math.round(totalCommitsLastYear).toLocaleString()}`);
+    console.log(`   Total commits (2025): ${Math.round(totalCommitsLastYear).toLocaleString()}`);
     console.log(`   Top 5 repos by size:`);
     repoDetails.slice(0, 5).forEach((repo, idx) => {
       console.log(`     ${idx + 1}. ${repo.name}: ${repo.sizeKB}KB = ~${repo.estimatedLines.toLocaleString()} lines`);
@@ -144,6 +143,7 @@ export async function GET() {
     }
     
     const stats: GitHubStats = {
+      publicRepos: publicRepos.length,
       totalLines,
       totalCommitsLastYear: Math.round(totalCommitsLastYear),
       lastUpdated: new Date().toISOString(),
@@ -156,6 +156,7 @@ export async function GET() {
     // Fallback: return a reasonable estimate
     return NextResponse.json(
       { 
+        publicRepos: 19, // Fallback estimate
         totalLines: 60000, // Fallback estimate
         totalCommitsLastYear: 500, // Fallback estimate
         lastUpdated: new Date().toISOString(),

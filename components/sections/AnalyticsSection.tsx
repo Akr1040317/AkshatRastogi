@@ -97,31 +97,19 @@ export default function AnalyticsSection() {
       loading: false,
     });
 
-    // Fetch real-time stats from GitHub API (non-blocking)
+    // Fetch real-time stats from our API route (non-blocking)
     const fetchGitHubStats = async () => {
       try {
-        // Fetch user profile for repo count
-        const userResponse = await fetch('https://api.github.com/users/Akr1040317');
-        if (!userResponse.ok) return;
-        const userData = await userResponse.json();
+        const response = await fetch('/api/github-stats');
+        if (!response.ok) return;
+        const data = await response.json();
         
-        // Fetch repos to calculate lines
-        const reposResponse = await fetch('https://api.github.com/users/Akr1040317/repos?per_page=100&sort=updated');
-        if (!reposResponse.ok) return;
-        const repos = await reposResponse.json();
-        
-        // Calculate total lines from repo sizes (size is in KB, ~75 lines per KB)
-        const publicRepos = repos.filter((r: any) => !r.fork);
-        let totalLines = 0;
-        for (const repo of publicRepos) {
-          totalLines += (repo.size || 0) * 75;
-        }
-        
-        // Update with real data
+        // Update with real data from API
         setGithubStats(prev => ({
           ...prev,
-          publicRepos: userData.public_repos || prev.publicRepos,
-          totalLines: totalLines > 0 ? totalLines : prev.totalLines,
+          publicRepos: data.publicRepos || prev.publicRepos,
+          totalLines: data.totalLines || prev.totalLines,
+          totalCommitsLastYear: data.totalCommitsLastYear || prev.totalCommitsLastYear,
         }));
       } catch (error) {
         // Silently fail - we have fallback values
@@ -181,8 +169,8 @@ export default function AnalyticsSection() {
     {
       icon: GitBranch,
       label: 'Commits in 2025',
-      numericValue: 243,
-      isLoading: false,
+      numericValue: githubStats.totalCommitsLastYear,
+      isLoading: githubStats.loading,
       color: 'text-orange-400',
       bgColor: 'bg-orange/20',
       delay: 0.4,
