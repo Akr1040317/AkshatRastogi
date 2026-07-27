@@ -37,10 +37,10 @@ export const hiveJourney: HiveJourneyEvent[] = [
   {
     id: 'scripps-2026',
     date: 'May 26 to May 28, 2026',
-    title: 'Hive students reached Scripps semis',
+    title: 'Hive at the Scripps National Spelling Bee Finals',
     location: 'Washington, DC',
     summary:
-      'Permission to attend arrived May 24. Two days later the Bee started. We bought flights on short notice, stayed with friends in DC, and turned Ross polos into branded merch overnight so we could show up on stage with our students. The results proved the method under the highest pressure.',
+      'Hive students reached Scripps semis. Permission to attend arrived May 24. Two days later the Bee started. We bought flights on short notice, stayed with friends in DC, and turned Ross polos into branded merch overnight so we could show up on stage with our students. The results proved the method under the highest pressure.',
     highlights: [
       '19 Hive students competed at Scripps',
       '14 placed in the top 100; 7 reached quarterfinals; 3 reached the semis',

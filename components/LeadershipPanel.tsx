@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Award, Trophy, Users, Calendar, MapPin } from 'lucide-react';
+import { Award, Trophy, Calendar, MapPin } from 'lucide-react';
 import { leadership } from '@/data/leadership';
 
 export default function LeadershipPanel() {
@@ -55,40 +55,6 @@ export default function LeadershipPanel() {
           </div>
         </motion.div>
       ))}
-
-      {/* Additional Leadership Highlights */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
-        className="glass-2 rounded-xl p-6"
-      >
-        <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
-          <Users size={24} className="text-purple" />
-          Additional Leadership
-        </h3>
-        <div className="space-y-4">
-          <div>
-            <h4 className="font-semibold mb-2">Entrepreneurship & Product Building</h4>
-            <p className="text-muted text-sm">
-              Founded and scaled multiple products including Hive (600+ students), CodingForCharity (70+ members across 8 countries),
-              and Gathr (700+ UF students). Led technical development, product strategy, and team coordination.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Mentorship & Community Impact</h4>
-            <p className="text-muted text-sm">
-              Mentored emerging cricketers, led development teams, and built platforms that serve educational communities.
-              Received recognition from local media for community impact through CodingForCharity.
-            </p>
-          </div>
-        </div>
-      </motion.div>
     </div>
   );
 }
-
-
-
-
-

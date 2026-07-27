@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Award, Trophy, Users, Calendar, MapPin } from 'lucide-react';
+import { Award, Trophy, Calendar, MapPin } from 'lucide-react';
 import { leadership } from '@/data/leadership';
 
 export default function LeadershipSection() {
@@ -27,7 +27,7 @@ export default function LeadershipSection() {
           <p className="text-xl text-muted">Beyond code. Leading teams and communities</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        <div className="grid md:grid-cols-2 gap-8">
           {leadership.map((item, index) => (
             <motion.div
               key={item.id}
@@ -40,7 +40,11 @@ export default function LeadershipSection() {
                 stiffness: 100,
               }}
               whileHover={{ scale: 1.02, rotateZ: 1 }}
-              className="glass-2 rounded-hive p-5 sm:p-6 md:p-8 relative overflow-hidden group"
+              className={`glass-2 rounded-hive p-5 sm:p-6 md:p-8 relative overflow-hidden group ${
+                index === leadership.length - 1 && leadership.length % 2 === 1
+                  ? 'md:col-span-2 md:max-w-xl md:mx-auto md:w-full'
+                  : ''
+              }`}
             >
               {/* Background Gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-pink/10 to-blue/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -88,36 +92,6 @@ export default function LeadershipSection() {
             </motion.div>
           ))}
         </div>
-
-        {/* Additional Leadership Highlights */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="glass-2 rounded-hive p-5 sm:p-6 md:p-8"
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <Users size={28} className="text-purple" />
-            <h3 className="text-2xl font-bold">Additional Leadership</h3>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-semibold mb-2 text-pink">Entrepreneurship & Product Building</h4>
-              <p className="text-muted text-sm leading-relaxed">
-                Building Hive (1500+ users across 3 countries, PrepCenter for UAE/Oman, Scripps 2026 results).
-                Also founded CodingForCharity (70+ members across 8 countries) and co-founded Gathr (700+ UF students).
-                UF Gator Tank Pitch Competition Finalist.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-2 text-blue">Mentorship & Community Impact</h4>
-              <p className="text-muted text-sm leading-relaxed">
-                Mentored emerging cricketers, led development teams, and built platforms that serve educational communities.
-                Received recognition from local media for community impact through CodingForCharity.
-              </p>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
