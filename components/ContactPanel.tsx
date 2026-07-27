@@ -22,10 +22,10 @@ export default function ContactPanel() {
         className="text-center max-w-2xl mx-auto"
       >
         <h2 className="text-4xl md:text-5xl font-bold mb-6">
-          Let's <span className="gradient-text">build something serious</span>
+          Get in <span className="gradient-text">touch</span>
         </h2>
         <p className="text-lg text-muted mb-8">
-          I'm always open to discussing new opportunities, interesting projects, or just having a conversation about technology and product building.
+          I am building Hive full-time. For partnerships, press, schools, or questions about Hive, email or book a meeting below.
         </p>
       </motion.section>
 
@@ -114,15 +114,6 @@ export default function ContactPanel() {
             <FileText size={20} className="text-muted group-hover:text-orange transition-colors" />
           </a>
         </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="text-center text-sm text-muted"
-      >
-        Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
       </motion.div>
     </div>
   );

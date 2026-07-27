@@ -11,7 +11,7 @@ export default function SkillsSection() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="skills" ref={ref} className="min-h-screen flex flex-col justify-center px-4 md:px-8 py-20 relative">
+    <section id="skills" ref={ref} className="min-h-[100svh] flex flex-col justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24 relative">
       <div className="max-w-7xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -19,7 +19,7 @@ export default function SkillsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-4">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
             <span className="gradient-text">Technical Skills</span>
           </h2>
           <p className="text-xl text-muted">Technologies I work with</p>
@@ -40,7 +40,7 @@ export default function SkillsSection() {
               }}
               className="glass-2 rounded-2xl p-6"
             >
-              <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
+              <h3 className="text-xl font-bold mb-6 text-text flex items-center gap-2">
                 <span className="w-1 h-6 bg-white rounded-full" />
                 {category.category}
               </h3>

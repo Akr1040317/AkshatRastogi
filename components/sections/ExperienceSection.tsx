@@ -12,7 +12,7 @@ export default function ExperienceSection() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="experience" ref={ref} className="min-h-screen flex flex-col justify-center px-4 md:px-8 py-20 relative">
+    <section id="experience" ref={ref} className="min-h-[100svh] flex flex-col justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24 relative">
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -22,7 +22,7 @@ export default function ExperienceSection() {
         >
           <div className="flex items-center justify-center gap-4 mb-4">
             <Briefcase className="text-purple" size={32} />
-            <h2 className="text-5xl md:text-6xl font-bold">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold">
               <span className="gradient-text">Experience</span>
             </h2>
           </div>
@@ -129,7 +129,7 @@ export default function ExperienceSection() {
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.3 }}
-                          className="overflow-hidden border-t border-white/10"
+                          className="overflow-hidden border-t border-line"
                         >
                           <div className="p-6 space-y-6">
                             {/* Highlights */}

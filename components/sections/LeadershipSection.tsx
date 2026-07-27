@@ -10,7 +10,7 @@ export default function LeadershipSection() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="leadership" ref={ref} className="min-h-screen flex flex-col justify-center px-4 md:px-8 py-20 relative">
+    <section id="leadership" ref={ref} className="min-h-[100svh] flex flex-col justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24 relative">
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -20,11 +20,11 @@ export default function LeadershipSection() {
         >
           <div className="flex items-center justify-center gap-4 mb-4">
             <Award className="text-purple" size={32} />
-            <h2 className="text-5xl md:text-6xl font-bold">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold">
               <span className="gradient-text">Leadership</span>
             </h2>
           </div>
-          <p className="text-xl text-muted">Beyond code - leading teams and communities</p>
+          <p className="text-xl text-muted">Beyond code. Leading teams and communities</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
@@ -40,7 +40,7 @@ export default function LeadershipSection() {
                 stiffness: 100,
               }}
               whileHover={{ scale: 1.02, rotateZ: 1 }}
-              className="glass-2 rounded-2xl p-8 relative overflow-hidden group"
+              className="glass-2 rounded-hive p-5 sm:p-6 md:p-8 relative overflow-hidden group"
             >
               {/* Background Gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple/10 via-pink/10 to-blue/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -94,7 +94,7 @@ export default function LeadershipSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="glass-2 rounded-2xl p-8"
+          className="glass-2 rounded-hive p-5 sm:p-6 md:p-8"
         >
           <div className="flex items-center gap-3 mb-6">
             <Users size={28} className="text-purple" />
@@ -104,8 +104,9 @@ export default function LeadershipSection() {
             <div>
               <h4 className="font-semibold mb-2 text-pink">Entrepreneurship & Product Building</h4>
               <p className="text-muted text-sm leading-relaxed">
-                Founded and scaled multiple products including Hive (600+ students), CodingForCharity (70+ members across 8 countries),
-                and Gathr (700+ UF students). Led technical development, product strategy, and team coordination.
+                Building Hive (1500+ users across 3 countries, PrepCenter for UAE/Oman, Scripps 2026 results).
+                Also founded CodingForCharity (70+ members across 8 countries) and co-founded Gathr (700+ UF students).
+                UF Gator Tank Pitch Competition Finalist.
               </p>
             </div>
             <div>

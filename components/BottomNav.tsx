@@ -12,16 +12,16 @@ interface BottomNavProps {
 
 const navItems: { id: Module; label: string; icon: React.ComponentType<any> }[] = [
   { id: 'overview', label: 'Overview', icon: Home },
-  { id: 'projects', label: 'Projects', icon: FolderKanban },
   { id: 'experience', label: 'Experience', icon: Briefcase },
+  { id: 'projects', label: 'Projects', icon: FolderKanban },
   { id: 'leadership', label: 'Leadership', icon: Award },
   { id: 'contact', label: 'Contact', icon: Mail },
 ];
 
 export default function BottomNav({ currentModule, onModuleChange }: BottomNavProps) {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50">
-      <div className="glass-2 border-t border-white/10">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 pb-[env(safe-area-inset-bottom)]">
+      <div className="glass-2 border-t border-line">
         <div className="flex justify-around items-center py-2">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -32,7 +32,7 @@ export default function BottomNav({ currentModule, onModuleChange }: BottomNavPr
                 onClick={() => onModuleChange(item.id)}
                 className={clsx(
                   'flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-all',
-                  isActive ? 'text-white' : 'text-muted'
+                  isActive ? 'text-amber-deep' : 'text-muted'
                 )}
                 whileTap={{ scale: 0.9 }}
               >
@@ -40,7 +40,7 @@ export default function BottomNav({ currentModule, onModuleChange }: BottomNavPr
                 <span className="text-xs">{item.label}</span>
                 {isActive && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-pink via-purple to-blue"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-deep via-amber to-amber-soft"
                     layoutId="activeBottomNav"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />

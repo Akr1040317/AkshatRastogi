@@ -17,7 +17,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" ref={ref} className="min-h-screen flex flex-col justify-center px-4 md:px-8 py-20 relative">
+    <section id="contact" ref={ref} className="min-h-[100svh] flex flex-col justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24 relative">
       <div className="max-w-4xl mx-auto w-full text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -25,11 +25,11 @@ export default function ContactSection() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            Let's <span className="gradient-text">build something serious</span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
+            Get in <span className="gradient-text">touch</span>
           </h2>
           <p className="text-xl text-muted max-w-2xl mx-auto">
-            I'm always open to discussing new opportunities, interesting projects, or just having a conversation about technology and product building.
+            I am building Hive full-time. For partnerships, press, schools, or questions about Hive, email or book a meeting below.
           </p>
         </motion.div>
 
@@ -53,7 +53,7 @@ export default function ContactSection() {
               {emailCopied ? (
                 <Check size={20} className="text-green-400" />
               ) : (
-                <Copy size={20} className="text-muted group-hover:text-white transition-colors" />
+                <Copy size={20} className="text-muted group-hover:text-text transition-colors" />
               )}
             </div>
             <div className="text-sm text-muted mb-1">Email</div>
@@ -135,15 +135,6 @@ export default function ContactSection() {
             <div className="text-sm text-muted mb-1">Book a Meeting</div>
             <div className="font-semibold text-lg">Schedule with Cal.com</div>
           </motion.a>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-sm text-muted"
-        >
-          Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
         </motion.div>
       </div>
     </section>

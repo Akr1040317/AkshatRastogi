@@ -14,51 +14,51 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
+    id: 'hive',
+    company: 'Hive Education',
+    role: 'Co-Founder, Technical Lead (iOS & Web)',
+    location: 'Orlando, FL / Remote',
+    startDate: 'Jun 2023',
+    endDate: 'Present',
+    type: 'Full-time',
+    description:
+      'Building Hive, a pattern-based K-8 literacy platform used by 1500+ students across 3 countries. Curriculum designed with a former Top-5 Scripps National Spelling Bee finalist.',
+    highlights: [
+      'Built Hive\'s iOS app and web platform (Hive 2.0 student and parent dashboards, lessons, quizzes, BeeReady, Family links, Stripe billing) used by 1500+ users across the US, UAE, and Oman.',
+      'Engineered PrepCenter with The Spelling Bee Championship as the official studying and quizzing platform for Oman Spelling Bee 2026 (launched Jan 10, 2026), supporting the UAE and Oman competition ecosystem including learn.spellingbee.ae. 1000+ users in the UAE; all top-3 UAE spellers studied with Hive.',
+      'At the 2026 Scripps National Spelling Bee, 19 Hive students competed: 14 placed in the top 100, 7 reached the quarterfinals, and 3 made the semis. All but 4 were competing at nationals for the first time.',
+      'Shipping adaptive AI tutoring on top of owned curriculum: kid-safe pattern chat, struggle detection, and auto-assigned lessons, quizzes, and daily plans.',
+    ],
+    technologies: [
+      'React',
+      'Vite',
+      'Swift',
+      'iOS',
+      'Firebase',
+      'Vercel',
+      'Stripe',
+      'OpenAI',
+      'Google Cloud TTS',
+      'Expo',
+    ],
+    website: 'https://www.hivespelling.com',
+  },
+  {
     id: 'honeywell',
     company: 'Honeywell Aerospace',
     role: 'Software Engineer I',
     location: 'Phoenix, AZ',
     startDate: 'Jun 2025',
-    endDate: 'Present',
+    endDate: 'Jun 2026',
     type: 'Full-time',
     description:
-      'Develop C software for Flight Management System in a safety-critical avionics environment, contributing to next-generation cockpits.',
+      'Developed C software for Flight Management System in a safety-critical avionics environment, contributing to next-generation cockpits.',
     highlights: [
-      'Develop C software for Flight Management System in a safety-critical avionics environment, contributing to next-generation cockpits.',
-      'Perform system, HLR, LLR, and SLR requirement updates and formalizations with full traceability aligned to DO-178C standards.',
+      'Developed C software for Flight Management System in a safety-critical avionics environment, contributing to next-generation cockpits.',
+      'Performed system, HLR, LLR, and SLR requirement updates and formalizations with full traceability aligned to DO-178C standards.',
       'Extended the Netrikann remote-testing tool by adding touch-interaction and event-simulation features, enabling remote hardware-bench validation for global teams and reducing manual integration test effort.',
     ],
     technologies: ['C', 'DO-178C', 'Avionics', 'Flight Management Systems'],
-  },
-  {
-    id: 'hive',
-    company: 'Hive - Spell Intelligently',
-    role: 'Co-Founder, CEO, Technical Lead (iOS & Web)',
-    location: 'Lake Mary, FL → Remote',
-    startDate: 'Jun 2023',
-    endDate: 'Present',
-    type: 'Self-employed',
-    description:
-      'Built Hive\'s iOS app and web platform used by 600+ students and piloted with multiple school districts, delivering 60+ pattern-based lessons and quizzes on roots, patterns, and language origins.',
-    highlights: [
-      'Built Hive\'s iOS app and web platform used by 600+ students and piloted with multiple school districts, delivering 60+ pattern-based lessons and quizzes on roots, patterns, and language origins.',
-      'Established partnership with Merriam-Webster, integrating API with GPT-4 for sentence generation, explanations, and feedback.',
-      'Engineered PrepCenter™, the official studying platform and technology & education partner for the Spelling Bee Championship UAE, with round-based word lists, four study modes, analytics, and leaderboards for hundreds of competitors.',
-      'Developed a Next.js/Tailwind educator dashboard, optimized backend using API pagination, caching, lazy instantiation, Firebase, and Google Cloud Functions, and added custom list-creation tools while prototyping an SLM-based tutor for adaptive coaching.',
-    ],
-    technologies: [
-      'Swift',
-      'iOS',
-      'Next.js',
-      'Tailwind CSS',
-      'React.js',
-      'Firebase',
-      'Google Cloud Functions',
-      'GPT-4 API',
-      'CloudKit',
-      'REST APIs',
-    ],
-    website: 'https://hivespelling.com',
   },
   {
     id: 'siemens',
@@ -72,7 +72,7 @@ export const experiences: Experience[] = [
       'Developed a customer-facing feature in NX-CAD using C++ and HTML rendering to modernize the 2D Cross-Section View, enabling real-time cable layout visualization with color-coded data for industrial engineering projects.',
     highlights: [
       'Developed a customer-facing feature in NX-CAD using C++ and HTML rendering to modernize the 2D Cross-Section View, enabling real-time cable layout visualization with color-coded data for industrial engineering projects.',
-      'Led sprint planning & task prioritization in a scrum-based Agile environment, collaborating with international teams to develop & integrate real-time data retrieval using Object Manager & C++, improving data accuracy & cost efficiency.',
+      'Led sprint planning and task prioritization in a scrum-based Agile environment, collaborating with international teams to develop and integrate real-time data retrieval using Object Manager and C++, improving data accuracy and cost efficiency.',
       'Addressed production bugs, introduced a Multi-Tiered Labels feature, and implemented unit tests to ensure reliability.',
     ],
     technologies: ['C++', 'HTML', 'NX-CAD', 'Agile', 'Scrum', 'Object Manager'],
@@ -89,8 +89,8 @@ export const experiences: Experience[] = [
       'Led full-stack web development of a 21-module business health assessment platform for optimizing business growth strategies.',
     highlights: [
       'Led full-stack web development of a 21-module business health assessment platform for optimizing business growth strategies.',
-      'Implemented a secure user login/registration system with OTP verification & hashing/encryption techniques.',
-      'Employed PHP PDO with parameterized queries to secure the back end against XSS & SQLi attacks, while managing the MySQL database and generating server-side PDF reports for clients.',
+      'Implemented a secure user login/registration system with OTP verification and hashing/encryption techniques.',
+      'Employed PHP PDO with parameterized queries to secure the back end against XSS and SQLi attacks, while managing the MySQL database and generating server-side PDF reports for clients.',
     ],
     technologies: [
       'PHP',
@@ -112,11 +112,11 @@ export const experiences: Experience[] = [
     endDate: 'Dec 2021',
     type: 'Self-employed',
     description:
-      'Founded CodingForCharity, an organization with 70+ members across 8 countries that fundraises for underprivileged children by building websites for businesses/non-profits in exchange for charity donations.',
+      'Founded CodingForCharity during COVID: student developers built free websites for small businesses and non-profits in exchange for charity donations supporting underprivileged children.',
     highlights: [
-      'Founded CodingForCharity, an organization with 70+ members across 8 countries that fundraises for underprivileged children by building websites for businesses/non-profits in exchange for charity donations.',
-      'Implemented full-stack web development across e-commerce, paywalls, and mobile ordering, developed/managed 40+ websites.',
-      'Received coverage from prominent local radio and TV stations in recognition of CodingForCharity\'s impact.',
+      'Grew to 70+ members across 8 countries and launched 40+ websites, teaching members to code before they shipped.',
+      'Won the first client after cold calls and credibility hurdles, then scaled through local media including Spectrum News 13 Everyday Hero.',
+      'Built the organization site and multiple client sites end to end (WordPress, e-commerce, paywalls, mobile ordering).',
     ],
     technologies: [
       'WordPress',
@@ -128,8 +128,5 @@ export const experiences: Experience[] = [
       'HTML',
       'CSS',
     ],
-    website: 'https://codingforcharityorg.com',
   },
 ];
-
-

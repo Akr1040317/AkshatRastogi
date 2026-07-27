@@ -133,19 +133,19 @@ export default function AnalyticsSection() {
 
   const stats = [
     {
-      icon: Globe,
-      label: 'Websites Created',
-      numericValue: 72,
-      color: 'text-blue-400',
-      bgColor: 'bg-blue/20',
+      icon: Users,
+      label: 'Hive Users',
+      numericValue: 1500,
+      color: 'text-purple',
+      bgColor: 'bg-honey',
       delay: 0,
     },
     {
-      icon: Users,
-      label: 'Hive Students',
-      numericValue: 600,
-      color: 'text-purple-400',
-      bgColor: 'bg-purple/20',
+      icon: Globe,
+      label: 'Countries',
+      numericValue: 3,
+      color: 'text-blue',
+      bgColor: 'bg-blue/10',
       delay: 0.1,
     },
     {
@@ -153,8 +153,8 @@ export default function AnalyticsSection() {
       label: 'GitHub Repositories',
       numericValue: githubStats.publicRepos,
       isLoading: githubStats.loading,
-      color: 'text-pink-400',
-      bgColor: 'bg-pink/20',
+      color: 'text-pink',
+      bgColor: 'bg-honey',
       delay: 0.2,
     },
     {
@@ -162,23 +162,23 @@ export default function AnalyticsSection() {
       label: 'Lines of Code',
       numericValue: githubStats.totalLines,
       isLoading: githubStats.loading,
-      color: 'text-green-400',
-      bgColor: 'bg-green/20',
+      color: 'text-amber-deep',
+      bgColor: 'bg-amber/10',
       delay: 0.3,
     },
     {
       icon: GitBranch,
-      label: 'Commits in 2025',
+      label: 'Commits (recent)',
       numericValue: githubStats.totalCommitsLastYear,
       isLoading: githubStats.loading,
-      color: 'text-orange-400',
-      bgColor: 'bg-orange/20',
+      color: 'text-orange',
+      bgColor: 'bg-orange/10',
       delay: 0.4,
     },
   ];
 
   return (
-    <section id="analytics" ref={ref} className="min-h-screen flex flex-col justify-center px-4 md:px-8 py-20 relative">
+    <section id="analytics" ref={ref} className="min-h-[100svh] flex flex-col justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24 relative">
       <div className="max-w-7xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -186,7 +186,7 @@ export default function AnalyticsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-4">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
             <span className="gradient-text">By the Numbers</span>
           </h2>
           <p className="text-xl text-muted">Impact & achievements</p>
@@ -208,7 +208,7 @@ export default function AnalyticsSection() {
                   damping: 12,
                 }}
                 whileHover={{ scale: 1.05, y: -5, rotateX: 5 }}
-                className="glass-2 rounded-2xl p-8 text-center group cursor-pointer"
+                className="glass-2 rounded-hive p-5 sm:p-6 md:p-8 text-center group cursor-pointer"
               >
                 <motion.div
                   initial={{ scale: 0 }}
@@ -286,7 +286,7 @@ export default function AnalyticsSection() {
                 href="https://github.com/Akr1040317" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-purple hover:text-pink transition-colors"
+                className="text-amber-deep hover:text-purple transition-colors font-semibold"
               >
                 @Akr1040317
               </a>

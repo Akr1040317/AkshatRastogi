@@ -13,8 +13,8 @@ interface SidebarNavProps {
 
 const navItems: { id: Module; label: string; icon: React.ComponentType<any> }[] = [
   { id: 'overview', label: 'Overview', icon: Home },
-  { id: 'projects', label: 'Projects', icon: FolderKanban },
   { id: 'experience', label: 'Experience', icon: Briefcase },
+  { id: 'projects', label: 'Projects', icon: FolderKanban },
   { id: 'leadership', label: 'Leadership', icon: Award },
   { id: 'contact', label: 'Contact', icon: Mail },
 ];
@@ -33,15 +33,15 @@ export default function SidebarNav({ currentModule, onModuleChange }: SidebarNav
               className={clsx(
                 'relative p-3 rounded-xl transition-all duration-200',
                 isActive
-                  ? 'text-white'
-                  : 'text-muted hover:text-white'
+                  ? 'text-amber-deep'
+                  : 'text-muted hover:text-text'
               )}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
               {isActive && (
                 <motion.div
-                  className="absolute inset-0 rounded-xl bg-gradient-to-r from-pink/20 via-purple/20 to-blue/20"
+                  className="absolute inset-0 rounded-xl bg-gradient-to-r from-amber/25 via-honey to-amber-soft/40"
                   layoutId="activeNav"
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 />

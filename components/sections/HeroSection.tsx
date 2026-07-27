@@ -1,8 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowDown, MapPin, Code, Rocket } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import { education } from '@/data/education';
+import HeroHexField from '@/components/HeroHexField';
 
 export default function HeroSection() {
   const scrollToNext = () => {
@@ -10,18 +11,23 @@ export default function HeroSection() {
   };
 
   return (
-    <section id="hero" className="min-h-screen flex flex-col justify-center items-center px-4 md:px-8 py-20 relative">
+    <section
+      id="hero"
+      className="min-h-[100svh] flex flex-col justify-center items-center px-4 sm:px-6 md:px-8 py-20 sm:py-24 pb-28 md:pb-24 relative overflow-hidden"
+    >
+      <HeroHexField />
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="max-w-5xl mx-auto text-center space-y-8"
+        className="max-w-5xl mx-auto text-center space-y-6 sm:space-y-8 w-full relative z-10"
       >
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-6xl md:text-8xl font-bold mb-6"
+          transition={{ duration: 0.8, delay: 0.15 }}
+          className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6 break-words"
         >
           <span className="gradient-text">Akshat Rastogi</span>
         </motion.h1>
@@ -29,82 +35,55 @@ export default function HeroSection() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-2xl md:text-3xl text-muted mb-4"
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-xl sm:text-2xl md:text-3xl text-text font-semibold"
         >
-          Software Engineer I @ Honeywell Aerospace
+          Co-Founder & Technical Lead @ Hive
         </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-base sm:text-lg md:text-xl text-muted mb-4 sm:mb-6"
+        >
+          Former Software Engineer I @ Honeywell Aerospace
+        </motion.p>
+
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-xl md:text-2xl text-purple mb-8"
+          className="text-base sm:text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed px-1"
         >
-          Co-Founder & CEO @ Hive
+          Building Hive, a pattern-based literacy platform for K-8. Built with a former Top-5 Scripps
+          finalist. 1500+ users across 3 countries. At Scripps 2026, 14 of our students placed in the top 100.
         </motion.p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-lg md:text-xl text-muted max-w-3xl mx-auto leading-relaxed mb-12"
-        >
-          Building products that matter. Currently developing avionics software for next-generation cockpits
-          and scaling Hive, an education platform helping students master spelling through pattern recognition.
-        </motion.p>
-
-        {/* Status Pills */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="flex flex-wrap justify-center gap-4 mb-12"
+          className="glass-2 rounded-hive p-5 sm:p-6 max-w-md mx-auto"
         >
-          <div className="glass-2 rounded-full px-6 py-3 flex items-center gap-2">
-            <MapPin size={18} className="text-blue" />
-            <span className="text-sm">Phoenix, AZ</span>
-          </div>
-          <div className="glass-2 rounded-full px-6 py-3 flex items-center gap-2">
-            <Code size={18} className="text-purple" />
-            <span className="text-sm">Building Software</span>
-          </div>
-          <div className="glass-2 rounded-full px-6 py-3 flex items-center gap-2">
-            <Rocket size={18} className="text-pink" />
-            <span className="text-sm">Open to Opportunities</span>
-          </div>
+          <p className="eyebrow mb-2">Education</p>
+          <p className="font-display font-semibold text-base sm:text-lg leading-snug">{education.degree}</p>
+          <p className="text-sm text-muted mt-1">{education.school}</p>
+          <p className="text-xs text-muted mt-1">
+            {education.startDate} - {education.endDate}
+          </p>
         </motion.div>
 
-        {/* Education Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="glass-2 rounded-xl p-6 max-w-md mx-auto mb-12"
-        >
-          <p className="text-sm text-muted mb-2">Education</p>
-          <p className="font-semibold">{education.degree}</p>
-          <p className="text-sm text-muted">{education.school}</p>
-          <p className="text-xs text-muted mt-1">{education.startDate} - {education.endDate}</p>
-        </motion.div>
-
-        {/* Scroll Indicator */}
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1 }}
+          transition={{ duration: 0.8, delay: 0.9 }}
           onClick={scrollToNext}
-          className="flex flex-col items-center gap-2 text-muted hover:text-white transition-colors group"
+          className="group flex flex-col items-center gap-2 text-muted hover:text-text transition-colors mx-auto pt-2"
         >
-          <span className="text-sm">Scroll to explore</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <ArrowDown size={24} className="group-hover:text-purple transition-colors" />
-          </motion.div>
+          <span className="text-sm">Scroll</span>
+          <ArrowDown size={22} className="group-hover:text-purple transition-colors animate-bounce" />
         </motion.button>
       </motion.div>
     </section>
   );
 }
-

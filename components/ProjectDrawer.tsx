@@ -35,9 +35,9 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
             className="fixed inset-4 md:inset-8 lg:inset-16 z-[101] flex items-center justify-center pointer-events-none"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-full h-full max-w-6xl max-h-[90vh] bg-bg-1 glass-2 rounded-2xl border border-white/10 overflow-hidden flex flex-col pointer-events-auto shadow-2xl">
+            <div className="w-full h-full max-w-6xl max-h-[90vh] bg-bg-1 glass-2 rounded-2xl border border-line overflow-hidden flex flex-col pointer-events-auto shadow-2xl">
               {/* Header */}
-              <div className="flex-shrink-0 glass-2 border-b border-white/10 p-6 flex items-start justify-between">
+              <div className="flex-shrink-0 glass-2 border-b border-line p-6 flex items-start justify-between">
                 <div className="flex-1 pr-4">
                   <h2 className="text-4xl md:text-5xl font-bold mb-2 gradient-text">{project.name}</h2>
                   <p className="text-xl text-muted mb-4">{project.tagline}</p>
@@ -72,7 +72,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.1 }}
-                        className="rounded-xl overflow-hidden border border-white/10"
+                        className="rounded-xl overflow-hidden border border-line"
                       >
                         {media.type === 'video' ? (
                           <video
@@ -183,7 +183,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 </div>
 
                 {/* Links */}
-                <div className="flex flex-wrap gap-4 pt-6 border-t border-white/10">
+                <div className="flex flex-wrap gap-4 pt-6 border-t border-line">
                   {project.links.website && (
                     <motion.a
                       href={project.links.website}

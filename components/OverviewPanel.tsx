@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MapPin, Code, Rocket } from 'lucide-react';
+import { Rocket } from 'lucide-react';
 import { skills } from '@/data/skills';
 import { education, certifications } from '@/data/education';
 
@@ -19,27 +19,18 @@ export default function OverviewPanel() {
           <span className="gradient-text">Akshat Rastogi</span>
         </h1>
         <p className="text-xl md:text-2xl text-muted mb-6">
-          Software Engineer I @ Honeywell Aerospace | Co-Founder @ Hive
+          Co-Founder & Technical Lead @ Hive
         </p>
         <p className="text-lg text-muted max-w-2xl mb-8">
-          Building products that matter. Currently developing avionics software for next-generation cockpits
-          and scaling Hive, an education platform helping students master spelling through pattern recognition.
+          Building Hive, a pattern-based literacy platform for K-8. 1500+ users across 3 countries.
         </p>
 
         {/* Current Status */}
         <div className="glass-2 rounded-xl p-6 mb-8">
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
-              <MapPin size={20} className="text-blue" />
-              <span className="text-muted">Phoenix, AZ</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Code size={20} className="text-purple" />
-              <span className="text-muted">Building: Avionics tooling + Hive scaling</span>
-            </div>
-            <div className="flex items-center gap-2">
               <Rocket size={20} className="text-pink" />
-              <span className="text-muted">Interests: Product, Education, Cricket</span>
+              <span className="text-muted">Building Hive</span>
             </div>
           </div>
         </div>
@@ -122,5 +113,8 @@ export default function OverviewPanel() {
     </div>
   );
 }
+
+
+
 
 

@@ -11,18 +11,32 @@ export interface Leadership {
 
 export const leadership: Leadership[] = [
   {
+    id: 'gator-tank',
+    organization: 'UF Gator Tank Pitch Competition',
+    role: 'Finalist',
+    location: 'Gainesville, FL',
+    startDate: '2024',
+    endDate: '2024',
+    description:
+      'Finalist at the University of Florida Gator Tank pitch competition, presenting and defending a venture in front of judges and peers.',
+    achievements: [
+      'Selected as a Gator Tank Finalist',
+      'Pitched product vision, traction, and go-to-market under live Q&A',
+    ],
+  },
+  {
     id: 'codingforcharity',
     organization: 'CodingForCharity',
-    role: 'Co-Founder & Executive Director',
+    role: 'Founder & Executive Director',
     location: 'Lake Mary, FL',
     startDate: 'Mar 2020',
     endDate: 'Dec 2021',
     description:
-      'Co-founded and led CodingForCharity, a global organization that fundraises for underprivileged children by building websites for businesses and non-profits in exchange for charity donations.',
+      'Founded CodingForCharity so teens could build free websites for small businesses and non-profits, then channel donations to underprivileged children after COVID canceled school fundraisers.',
     achievements: [
-      'Co-founded organization that grew to 70+ members across 8 countries',
-      'Led development of 40+ websites with e-commerce and payment processing',
-      'Received coverage from prominent local radio and TV stations',
+      'Grew to 70+ student members across 8 countries and shipped 40+ websites',
+      'Landed the first client after rejected cold calls and scam concerns, a local grocery',
+      'Featured as Spectrum News 13 Everyday Hero and on K92.3 Orlando radio',
     ],
   },
   {
@@ -41,4 +55,3 @@ export const leadership: Leadership[] = [
     ],
   },
 ];
-

@@ -37,8 +37,8 @@ export default function CommandPalette({ isOpen, onClose, onModuleChange }: Comm
 
   const commands: Command[] = [
     { id: 'overview', label: 'Go to Overview', icon: Home, action: () => { onModuleChange('overview'); onClose(); }, category: 'Navigation', shortcut: getShortcut('1') },
-    { id: 'projects', label: 'Go to Projects', icon: FolderKanban, action: () => { onModuleChange('projects'); onClose(); }, category: 'Navigation', shortcut: getShortcut('2') },
-    { id: 'experience', label: 'Go to Experience', icon: Briefcase, action: () => { onModuleChange('experience'); onClose(); }, category: 'Navigation', shortcut: getShortcut('3') },
+    { id: 'experience', label: 'Go to Experience', icon: Briefcase, action: () => { onModuleChange('experience'); onClose(); }, category: 'Navigation', shortcut: getShortcut('2') },
+    { id: 'projects', label: 'Go to Projects', icon: FolderKanban, action: () => { onModuleChange('projects'); onClose(); }, category: 'Navigation', shortcut: getShortcut('3') },
     { id: 'leadership', label: 'Go to Leadership', icon: Award, action: () => { onModuleChange('leadership'); onClose(); }, category: 'Navigation', shortcut: getShortcut('4') },
     { id: 'contact', label: 'Go to Contact', icon: Mail, action: () => { onModuleChange('contact'); onClose(); }, category: 'Navigation', shortcut: getShortcut('5') },
     { id: 'copy-email', label: 'Copy Email', icon: Copy, action: () => { navigator.clipboard.writeText('akshatrdev@gmail.com'); onClose(); }, category: 'Actions', shortcut: getShortcut('E') },
@@ -72,11 +72,11 @@ export default function CommandPalette({ isOpen, onClose, onModuleChange }: Comm
         onClose();
       } else if (isMod && e.key === '2') {
         e.preventDefault();
-        onModuleChange('projects');
+        onModuleChange('experience');
         onClose();
       } else if (isMod && e.key === '3') {
         e.preventDefault();
-        onModuleChange('experience');
+        onModuleChange('projects');
         onClose();
       } else if (isMod && e.key === '4') {
         e.preventDefault();
@@ -134,10 +134,10 @@ export default function CommandPalette({ isOpen, onClose, onModuleChange }: Comm
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search commands..."
-                  className="flex-1 bg-transparent border-none outline-none text-white placeholder-muted"
+                  className="flex-1 bg-transparent border-none outline-none text-text placeholder:text-muted"
                   autoFocus
                 />
-                <kbd className="px-2 py-1 text-xs rounded glass border border-white/10">ESC</kbd>
+                <kbd className="px-2 py-1 text-xs rounded glass border border-line">ESC</kbd>
               </div>
               <div className="max-h-96 overflow-y-auto">
                 {filteredCommands.length > 0 ? (
@@ -148,13 +148,13 @@ export default function CommandPalette({ isOpen, onClose, onModuleChange }: Comm
                         <motion.button
                           key={cmd.id}
                           onClick={cmd.action}
-                          className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors text-left group"
+                          className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg hover:bg-honey/60 transition-colors text-left group"
                           whileHover={{ x: 4 }}
                         >
                           <div className="flex items-center gap-3 flex-1">
                             <Icon size={20} className="text-muted" />
                             <div className="flex-1">
-                              <div className="text-white">{cmd.label}</div>
+                              <div className="text-text">{cmd.label}</div>
                               <div className="text-xs text-muted">{cmd.category}</div>
                             </div>
                           </div>
@@ -163,14 +163,14 @@ export default function CommandPalette({ isOpen, onClose, onModuleChange }: Comm
                               {cmd.shortcut.includes('+') ? (
                                 cmd.shortcut.split('+').map((key, idx, arr) => (
                                   <span key={idx} className="flex items-center gap-1">
-                                    <kbd className="px-2 py-1 text-xs rounded glass border border-white/20 font-mono text-muted">
+                                    <kbd className="px-2 py-1 text-xs rounded glass border border-line font-mono text-muted">
                                       {key}
                                     </kbd>
                                     {idx < arr.length - 1 && <span className="text-xs text-muted/50">+</span>}
                                   </span>
                                 ))
                               ) : (
-                                <kbd className="px-2 py-1 text-xs rounded glass border border-white/20 font-mono text-muted">
+                                <kbd className="px-2 py-1 text-xs rounded glass border border-line font-mono text-muted">
                                   {cmd.shortcut}
                                 </kbd>
                               )}

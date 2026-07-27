@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ExternalLink, Github, Sparkles, X, Filter, Search } from 'lucide-react';
+import { ExternalLink, Github, Sparkles, X, Filter, Search, ArrowRight } from 'lucide-react';
 import { projects, Project } from '@/data/projects';
 import ProjectModal from '@/components/ProjectDrawer';
 
@@ -71,7 +71,7 @@ export default function ProjectsSection() {
 
   return (
     <>
-      <section id="projects" ref={ref} className="min-h-screen flex flex-col justify-center px-4 md:px-8 py-20 relative">
+      <section id="projects" ref={ref} className="min-h-[100svh] flex flex-col justify-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24 relative">
         <div className="max-w-7xl mx-auto w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -81,7 +81,7 @@ export default function ProjectsSection() {
           >
             <div className="flex items-center justify-center gap-4 mb-4">
               <Sparkles className="text-purple" size={32} />
-              <h2 className="text-5xl md:text-6xl font-bold">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold">
                 <span className="gradient-text">Projects</span>
               </h2>
               <Sparkles className="text-pink" size={32} />
@@ -103,12 +103,12 @@ export default function ProjectsSection() {
                 placeholder="Search projects by name, description, or technology..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-full glass-2 text-white placeholder-muted focus:outline-none focus:ring-2 focus:ring-purple/50 transition-all"
+                className="w-full pl-12 pr-4 py-3 rounded-full glass-2 text-text placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-purple/50 transition-all"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted hover:text-white transition-colors"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted hover:text-text transition-colors"
                 >
                   <X size={18} />
                 </button>
@@ -132,8 +132,8 @@ export default function ProjectsSection() {
                     onClick={() => setCategoryFilter(f)}
                     className={`px-6 py-2 rounded-full transition-all font-medium ${
                       categoryFilter === f
-                        ? 'glass-2 text-white'
-                        : 'glass text-muted hover:text-white'
+                        ? 'glass-2 text-text'
+                        : 'glass text-muted hover:text-text'
                     }`}
                   >
                     {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -147,8 +147,8 @@ export default function ProjectsSection() {
                   onClick={() => setShowFilters(!showFilters)}
                   className={`px-4 py-2 rounded-full transition-all font-medium flex items-center gap-2 ${
                     showFilters || hasActiveFilters
-                      ? 'glass-2 text-white'
-                      : 'glass text-muted hover:text-white'
+                      ? 'glass-2 text-text'
+                      : 'glass text-muted hover:text-text'
                   }`}
                 >
                   <Filter size={16} />
@@ -163,7 +163,7 @@ export default function ProjectsSection() {
                 {hasActiveFilters && (
                   <button
                     onClick={clearFilters}
-                    className="px-4 py-2 rounded-full glass text-muted hover:text-white transition-all font-medium flex items-center gap-2"
+                    className="px-4 py-2 rounded-full glass text-muted hover:text-text transition-all font-medium flex items-center gap-2"
                   >
                     <X size={16} />
                     Clear All
@@ -193,8 +193,8 @@ export default function ProjectsSection() {
                           onClick={() => toggleTech(tech)}
                           className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                             isSelected
-                              ? 'glass-2 text-white bg-purple/30 border border-purple/50'
-                              : 'glass text-muted hover:text-white hover:glass-2'
+                              ? 'glass-2 text-text bg-purple/30 border border-purple/50'
+                              : 'glass text-muted hover:text-text hover:glass-2'
                           }`}
                         >
                           {tech}
@@ -231,7 +231,7 @@ export default function ProjectsSection() {
               <p className="text-xl text-muted mb-4">No projects found matching your filters.</p>
               <button
                 onClick={clearFilters}
-                className="px-6 py-3 rounded-full glass-2 text-white hover:glass transition-all"
+                className="px-6 py-3 rounded-full glass-2 text-text hover:glass transition-all"
               >
                 Clear Filters
               </button>
@@ -256,7 +256,7 @@ export default function ProjectsSection() {
                   className={`group cursor-pointer ${isLarge ? 'md:col-span-2 lg:col-span-2' : ''}`}
                   onClick={() => setSelectedProject(project)}
                 >
-                  <div className="glass-2 rounded-2xl overflow-hidden h-full hover:glass transition-all relative">
+                  <div className="glass-2 rounded-2xl overflow-hidden h-full hover:glass transition-all relative flex flex-col">
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-pink/10 via-purple/10 to-blue/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
                     
@@ -287,75 +287,69 @@ export default function ProjectsSection() {
                       )}
                       <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
                       
-                      {/* Category Badge */}
-                      {project.category === 'featured' && (
-                        <div className="absolute top-4 right-4 px-3 py-1 rounded-full glass-2 text-xs font-semibold bg-purple/30 text-purple">
-                          Featured
-                        </div>
-                      )}
+                      <div className="absolute top-4 right-4 px-3 py-1 rounded-full glass-2 text-xs font-semibold">
+                        {project.category === 'featured' ? 'Featured' : 'Lab'}
+                      </div>
                     </div>
 
-                    <div className="p-6 relative z-10">
-                      <h3 className="text-2xl font-bold mb-2 group-hover:text-purple transition-colors">
+                    <div className="p-5 sm:p-6 relative z-10 flex flex-col flex-1">
+                      <h3 className="text-xl sm:text-2xl font-bold mb-1 group-hover:text-purple transition-colors">
                         {project.name}
                       </h3>
-                      <p className="text-muted text-sm mb-4 line-clamp-2">{project.tagline}</p>
-                      
-                      {/* Tech Stack Pills */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.slice(0, 3).map((tech, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-1 text-xs rounded-lg glass"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.technologies.length > 3 && (
-                          <span className="px-2 py-1 text-xs rounded-lg glass text-muted">
-                            +{project.technologies.length - 3}
-                          </span>
-                        )}
-                      </div>
+                      <p className="text-sm text-amber-deep font-medium mb-2">{project.role}</p>
+                      <p className="text-muted text-sm sm:text-base leading-relaxed mb-3 line-clamp-3">
+                        {project.description}
+                      </p>
 
-                      {/* Stats or Description */}
-                      {project.stats && project.stats.length > 0 ? (
-                        <div className="flex gap-4 text-sm">
-                          {project.stats.slice(0, 2).map((stat, i) => (
-                            <div key={i} className="flex items-center gap-1">
-                              <span className="text-purple font-bold">{stat.value}</span>
-                              <span className="text-muted">{stat.label}</span>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-sm text-muted line-clamp-2">{project.description}</p>
+                      {project.stats && project.stats.length > 0 && (
+                        <p className="text-sm text-text/80 mb-4">
+                          {project.stats
+                            .slice(0, 3)
+                            .map((stat) => `${stat.value} ${stat.label.toLowerCase()}`)
+                            .join(' · ')}
+                        </p>
                       )}
 
-                      {/* Links */}
-                      <div className="flex gap-2 mt-4 pt-4 border-t border-white/10">
-                        {project.links.website && (
-                          <a
-                            href={project.links.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="p-2 rounded-lg glass hover:glass-2 transition-all"
-                          >
-                            <ExternalLink size={16} />
-                          </a>
-                        )}
-                        {project.links.github && (
-                          <a
-                            href={project.links.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="p-2 rounded-lg glass hover:glass-2 transition-all"
-                          >
-                            <Github size={16} />
-                          </a>
-                        )}
+                      <div className="mt-auto pt-3 border-t border-line flex items-center justify-between gap-3">
+                        <span className="inline-flex items-center gap-2 min-h-[44px] px-3.5 py-2 rounded-lg bg-purple/15 text-purple text-sm font-semibold group-hover:bg-purple/25 transition-colors">
+                          Learn more
+                          <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                        </span>
+                        <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                          {project.links.website && (
+                            <a
+                              href={project.links.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2.5 min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-lg glass hover:glass-2 transition-all"
+                              aria-label={`${project.name} website`}
+                            >
+                              <ExternalLink size={16} />
+                            </a>
+                          )}
+                          {project.links.github && (
+                            <a
+                              href={project.links.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2.5 min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-lg glass hover:glass-2 transition-all"
+                              aria-label={`${project.name} GitHub`}
+                            >
+                              <Github size={16} />
+                            </a>
+                          )}
+                          {project.links.appStore && (
+                            <a
+                              href={project.links.appStore}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2.5 min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-lg glass hover:glass-2 transition-all"
+                              aria-label={`${project.name} App Store`}
+                            >
+                              <ExternalLink size={16} />
+                            </a>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

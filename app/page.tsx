@@ -6,9 +6,11 @@ import SidebarNav from '@/components/SidebarNav';
 import BottomNav from '@/components/BottomNav';
 import CommandPalette from '@/components/CommandPalette';
 import BackgroundSystem from '@/components/BackgroundSystem';
+import ThemeToggle from '@/components/ThemeToggle';
 import HeroSection from '@/components/sections/HeroSection';
 import SkillsSection from '@/components/sections/SkillsSection';
 import AnalyticsSection from '@/components/sections/AnalyticsSection';
+import HiveJourneySection from '@/components/sections/HiveJourneySection';
 import ProjectsSection from '@/components/sections/ProjectsSection';
 import ExperienceSection from '@/components/sections/ExperienceSection';
 import LeadershipSection from '@/components/sections/LeadershipSection';
@@ -30,7 +32,7 @@ function CommandPaletteHint({ onOpen }: { onOpen: () => void }) {
     >
       <motion.button
         onClick={onOpen}
-        className="glass-2 rounded-lg px-4 py-3 text-sm text-muted hover:text-white transition-colors flex items-center gap-3 relative group"
+        className="glass-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-muted hover:text-text transition-colors flex items-center gap-2 sm:gap-3 relative group"
         animate={{
           scale: [1, 1.05, 1],
         }}
@@ -93,7 +95,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'skills', 'analytics', 'projects', 'experience', 'leadership', 'contact'];
+      const sections = ['hero', 'skills', 'analytics', 'experience', 'projects', 'journey', 'leadership', 'contact'];
       const scrollPosition = window.scrollY + 200;
 
       for (const section of sections) {
@@ -122,6 +124,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-bg-0 text-text relative overflow-x-hidden">
       <BackgroundSystem />
+      <ThemeToggle />
 
       {/* Floating Navigation */}
       <SidebarNav 
@@ -169,12 +172,13 @@ export default function Home() {
       />
 
       {/* Main Content - Scrollable */}
-      <main className="md:pl-20">
+      <main className="md:pl-20 relative z-10 pb-24 md:pb-8">
         <HeroSection />
         <SkillsSection />
         <AnalyticsSection />
-        <ProjectsSection />
         <ExperienceSection />
+        <ProjectsSection />
+        <HiveJourneySection />
         <LeadershipSection />
         <ContactSection />
       </main>
@@ -184,7 +188,7 @@ export default function Home() {
 
       {/* Scroll Progress Indicator */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink via-purple to-blue z-50 origin-left"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-deep via-amber to-amber-soft z-50 origin-left"
         style={{ scaleX: scrollYProgress }}
       />
     </div>
